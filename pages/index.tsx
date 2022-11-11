@@ -1,17 +1,41 @@
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react"
-import { Auth } from "@supabase/auth-ui-react"
+import { GetServerSideProps } from "next"
 
-export default function Home() {
+import React from "react"
+import { AuthSession } from "@supabase/supabase-js"
+
+type HomeProps = {
+  initialSession: AuthSession
+}
+
+export const Home: React.FC<HomeProps> = () => {
   const session = useSession()
   const supabase = useSupabaseClient()
 
-  return (
-    <div className="container" style={{ padding: "50px 0 100px 0" }}>
-      {!session ? (
-        <Auth supabaseClient={supabase} theme="dark" />
-      ) : (
-        <p>logged in</p>
-      )}
-    </div>
-  )
+  return <p>logged in</p>
 }
+
+export const getServerSideProps: GetServerSideProps<HomeProps> = async (
+  context
+) => {
+  const supabase = createServerSupabaseClient(context)
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  if (!session)
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    }
+
+  return {
+    props: {
+      initialSession: session,
+    },
+  }
+}
+export default Home

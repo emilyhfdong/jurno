@@ -25,5 +25,8 @@
     "react-dom": "18.2.0",
     "rebass": "^4.0.7",
     "typescript": "4.8.4"
+  },
+  "devDependencies": {
+    "@types/rebass": "^4.0.10"
   }
 }
