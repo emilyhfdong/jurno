@@ -4,16 +4,14 @@ import { GetServerSideProps } from "next"
 
 import React from "react"
 import { AuthSession } from "@supabase/supabase-js"
+import { HomeScreen } from "../components"
 
 type HomeProps = {
   initialSession: AuthSession
 }
 
 export const Home: React.FC<HomeProps> = () => {
-  const session = useSession()
-  const supabase = useSupabaseClient()
-
-  return <p>logged in</p>
+  return <HomeScreen />
 }
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async (

@@ -1,5 +1,5 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
-import { Auth, ThemeSupa, ThemeMinimal } from "@supabase/auth-ui-react"
+import { Auth, ThemeMinimal } from "@supabase/auth-ui-react"
 import React from "react"
 import { Flex, Text } from "rebass"
 import { useThemeContext } from "../../theme"
@@ -12,8 +12,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = () => {
   return (
     <Flex
       sx={{
-        backgroundColor: theme.background.primary,
-        minHeight: "100vh",
+        flex: 1,
         justifyContent: "center",
         alignItems: "center",
         fontFamily: theme.fonts.sansSerif,

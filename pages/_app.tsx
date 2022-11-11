@@ -8,22 +8,25 @@ import theme from "@rebass/preset"
 import { ThemeContextProvider, useThemeContext } from "../theme"
 
 import React from "react"
-import { Box } from "rebass"
+import { Box, Flex } from "rebass"
+import { Header } from "../components/shared"
 
 const Page: React.FC<{ children: ReactNode }> = ({ children }) => {
   const theme = useThemeContext()
 
   return (
-    <Box
+    <Flex
       sx={{
         backgroundColor: theme.background.primary,
         minHeight: "100vh",
         fontFamily: theme.fonts.sansSerif,
         paddingTop: 0,
+        flexDirection: "column",
       }}
     >
+      <Header />
       {children}
-    </Box>
+    </Flex>
   )
 }
 
