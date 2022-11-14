@@ -24,3 +24,17 @@ a {
     background: black;
   }
 }
+
+.ProseMirror {
+  outline: none;
+  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.ProseMirror p,
+ul,
+ol {
+  margin-top: 0;
+}

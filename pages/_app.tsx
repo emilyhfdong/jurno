@@ -17,11 +17,12 @@ const Page: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <Flex
       sx={{
-        backgroundColor: theme.background.primary,
+        backgroundColor: theme.colors.background,
         minHeight: "100vh",
         fontFamily: theme.fonts.sansSerif,
         paddingTop: 0,
         flexDirection: "column",
+        fontSize: 14,
       }}
     >
       <Header />

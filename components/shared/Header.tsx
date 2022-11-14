@@ -16,7 +16,7 @@ export const Header: React.FC<HeaderProps> = () => {
     <Flex
       sx={{
         height: "70px",
-        borderBottom: `1.5px solid ${theme.content.primary}`,
+        borderBottom: `1.5px solid ${theme.colors.content}`,
         paddingX: "24px",
         alignItems: "center",
         justifyContent: "space-between",
@@ -40,8 +40,8 @@ export const Header: React.FC<HeaderProps> = () => {
           }}
           sx={{
             cursor: "pointer",
-            backgroundColor: theme.content.primary,
-            color: theme.background.primary,
+            backgroundColor: theme.colors.content,
+            color: theme.colors.background,
             fontSize: 12,
             fontWeight: 500,
             letterSpacing: "1.5px",

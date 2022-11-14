@@ -5,13 +5,19 @@ const FONTS = {
 
 const THEMES = {
   light: {
-    background: { primary: "#FBF4E8" },
-    content: { primary: "#2F2E31" },
+    colors: {
+      background: "#FBF4E8",
+      content: "#0D0E17",
+      secondaryContent: "#9F9C94",
+    },
     fonts: FONTS,
   },
   blue: {
-    background: { primary: "#BBC5D8" },
-    content: { primary: "#2F2E31" },
+    colors: {
+      background: "#BBC5D8",
+      content: "#0D0E17",
+      secondaryContent: "#9F9C94",
+    },
     fonts: FONTS,
   },
 }

@@ -1,14 +1,26 @@
 import React from "react"
 import { Flex } from "rebass"
-import { Header } from "../shared"
+import { Editor } from "./Editor"
+import { SidePanel } from "./SidePanel"
 
 type HomeScreenProps = {}
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
   return (
-    <Flex sx={{ height: "100%", marginTop: "16px", paddingX: "16px" }}>
-      <Flex sx={{ flex: 1, height: "100%" }}>hi</Flex>
-      <Flex sx={{ flex: 3 }}>hji</Flex>
+    <Flex
+      sx={{
+        marginY: 16,
+        paddingX: 16,
+        flex: 1,
+        gap: 16,
+      }}
+    >
+      <Flex sx={{ flex: 1 }}>
+        <SidePanel />
+      </Flex>
+      <Flex sx={{ flex: 4 }}>
+        <Editor />
+      </Flex>
     </Flex>
   )
 }
