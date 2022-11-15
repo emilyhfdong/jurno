@@ -8,9 +8,12 @@ import theme from "@rebass/preset"
 import { ThemeContextProvider, useThemeContext } from "../theme"
 
 import React from "react"
-import { Box, Flex } from "rebass"
+import { Flex } from "rebass"
 import { Header } from "../components/shared"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import Head from "next/head"
+
+const queryClient = new QueryClient()
 
 const Page: React.FC<{ children: ReactNode }> = ({ children }) => {
   const theme = useThemeContext()
@@ -26,6 +29,9 @@ const Page: React.FC<{ children: ReactNode }> = ({ children }) => {
         fontSize: 14,
       }}
     >
+      <Head>
+        <title>jurno</title>
+      </Head>
       <Header />
       {children}
     </Flex>
@@ -36,17 +42,19 @@ export default function App({ Component, pageProps }: AppProps) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient())
 
   return (
-    <ThemeProvider theme={theme}>
-      <ThemeContextProvider>
-        <SessionContextProvider
-          supabaseClient={supabaseClient}
-          initialSession={pageProps.initialSession}
-        >
-          <Page>
-            <Component {...pageProps} />
-          </Page>
-        </SessionContextProvider>
-      </ThemeContextProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <ThemeContextProvider>
+          <SessionContextProvider
+            supabaseClient={supabaseClient}
+            initialSession={pageProps.initialSession}
+          >
+            <Page>
+              <Component {...pageProps} />
+            </Page>
+          </SessionContextProvider>
+        </ThemeContextProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }

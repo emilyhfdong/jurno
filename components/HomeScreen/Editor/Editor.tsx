@@ -6,6 +6,8 @@ import { useEditor, EditorContent, JSONContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import axios from "axios"
 import { BackendEntry, Entry } from "../types"
+import { transformBackendEntry } from "../utils"
+import { DATE_FORMAT } from "../constants"
 
 type EditorProps = {
   initialEntry: Entry
@@ -54,9 +56,8 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
           content: jsonContent,
         }
       )
-      setPersistedStringifiedContent(
-        JSON.stringify(response.data.entry.content)
-      )
+      const newEntry = transformBackendEntry(response.data.entry)
+      setPersistedStringifiedContent(JSON.stringify(newEntry.content))
     },
     [initialEntry.id]
   )
@@ -81,13 +82,7 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
           color: theme.colors.secondaryContent,
         }}
       >
-        <Text
-          sx={{
-            fontSize: 12,
-          }}
-        >
-          {startDate.toFormat("ccc LLL d yyyy 'at' h:mma")}
-        </Text>
+        <Text sx={{ fontSize: 12 }}>{startDate.toFormat(DATE_FORMAT)}</Text>
         {isSaved && <i className="ri-check-line"></i>}
       </Flex>
 

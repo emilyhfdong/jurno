@@ -4,6 +4,7 @@ import { useThemeContext } from "../../../theme"
 import { DateTime } from "luxon"
 import axios from "axios"
 import { BackendEntry, Entry } from "../types"
+import { transformBackendEntry } from "../utils"
 
 type SidePanelProps = {
   onAddNewEntry: (entry: Entry) => void
@@ -15,13 +16,7 @@ export const SidePanel: React.FC<SidePanelProps> = ({ onAddNewEntry }) => {
 
   const onClick = useCallback(async () => {
     const response = await axios.post<{ entry: BackendEntry }>("/api/entries")
-    const { content, created_at, last_updated, id } = response.data.entry
-    onAddNewEntry({
-      id,
-      content,
-      createdAt: created_at,
-      lastUpdated: last_updated,
-    })
+    onAddNewEntry(transformBackendEntry(response.data.entry))
   }, [onAddNewEntry])
 
   return (
