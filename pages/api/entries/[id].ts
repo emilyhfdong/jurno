@@ -23,7 +23,6 @@ export default async function handler(
 
   if (method === "PATCH") {
     const encryptedContent = encrypt(JSON.stringify(req.body.content))
-    console.log("hii", req.query)
 
     if (typeof req.query.id !== "string") {
       throw new Error("Missing required entry id")
@@ -35,15 +34,21 @@ export default async function handler(
         id: req.query.id,
         user_id: user.id,
         content: encryptedContent,
+        title: req.body.title ? encrypt(req.body.title) : null,
         created_at: req.body.createdAt,
       })
       .select("*")
       .single()
 
+    const newEntry = response.data
+
     res.status(200).json({
       entry: {
-        ...response.data,
-        content: JSON.parse(decrypt(response.data?.content || "")),
+        ...newEntry,
+        content: newEntry?.content
+          ? JSON.parse(decrypt(newEntry.content))
+          : null,
+        title: newEntry?.title ? decrypt(newEntry.title) : null,
       },
     })
     return

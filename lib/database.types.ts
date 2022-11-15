@@ -16,6 +16,7 @@ export interface Database {
           last_updated: string
           user_id: string
           id: string
+          title: string | null
         }
         Insert: {
           created_at?: string
@@ -23,6 +24,7 @@ export interface Database {
           last_updated?: string
           user_id: string
           id?: string
+          title?: string | null
         }
         Update: {
           created_at?: string
@@ -30,6 +32,7 @@ export interface Database {
           last_updated?: string
           user_id?: string
           id?: string
+          title?: string | null
         }
       }
       users: {

@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import type { NextApiRequest, NextApiResponse } from "next"
+import { decrypt } from "../../../apiUtils"
 import { Database } from "../../../lib/database.types"
 
 export default async function handler(
@@ -34,6 +35,23 @@ export default async function handler(
     }
 
     res.status(200).json({ entry: response.data })
+    return
+  }
+
+  if (method === "GET") {
+    const response = await client
+      .from("entries")
+      .select("*")
+      .eq("user_id", user.id)
+
+    res.status(200).json({
+      entries:
+        response.data?.map((entry) => ({
+          ...entry,
+          content: entry.content ? JSON.parse(decrypt(entry.content)) : null,
+          title: entry.title ? decrypt(entry.title) : null,
+        })) || [],
+    })
     return
   }
 
