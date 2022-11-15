@@ -10,6 +10,7 @@ import { ThemeContextProvider, useThemeContext } from "../theme"
 import React from "react"
 import { Box, Flex } from "rebass"
 import { Header } from "../components/shared"
+import Head from "next/head"
 
 const Page: React.FC<{ children: ReactNode }> = ({ children }) => {
   const theme = useThemeContext()

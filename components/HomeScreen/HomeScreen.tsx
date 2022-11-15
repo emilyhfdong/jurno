@@ -1,11 +1,15 @@
-import React from "react"
+import React, { useState } from "react"
 import { Flex } from "rebass"
 import { Editor } from "./Editor"
+import { EntriesList } from "./EntriesList"
 import { SidePanel } from "./SidePanel"
+import { Entry } from "./types"
 
 type HomeScreenProps = {}
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
+  const [activeEntry, setActiveEntry] = useState<Entry | null>(null)
+
   return (
     <Flex
       sx={{
@@ -16,10 +20,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
       }}
     >
       <Flex sx={{ flex: 1 }}>
-        <SidePanel />
+        <SidePanel onAddNewEntry={setActiveEntry} />
       </Flex>
       <Flex sx={{ flex: 4 }}>
-        <Editor />
+        {activeEntry ? <Editor initialEntry={activeEntry} /> : <EntriesList />}
       </Flex>
     </Flex>
   )

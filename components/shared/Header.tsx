@@ -1,9 +1,10 @@
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
 import React from "react"
-import { Box, Button, Flex, Text } from "rebass"
-import { StarIcon } from "."
+import { Box, Flex, Text } from "rebass"
+import { Button } from "./Button"
 import { useThemeContext } from "../../theme"
+import { StarIcon } from "./StarIcon"
 
 type HeaderProps = {}
 
@@ -38,21 +39,8 @@ export const Header: React.FC<HeaderProps> = () => {
             await client.auth.signOut()
             router.push("/login")
           }}
-          sx={{
-            cursor: "pointer",
-            backgroundColor: theme.colors.content,
-            color: theme.colors.background,
-            fontSize: 12,
-            fontWeight: 500,
-            letterSpacing: "1.5px",
-            borderRadius: 0,
-            ":hover": {
-              opacity: 0.8,
-            },
-          }}
-        >
-          log out
-        </Button>
+          text="log out"
+        />
       ) : (
         <Box />
       )}
