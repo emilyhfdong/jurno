@@ -12,10 +12,12 @@ import { Flex } from "rebass"
 import { Header } from "../components/shared"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import Head from "next/head"
+import type { AppType } from "next/app"
+import { trpc } from "../utils/trpc"
 
 const queryClient = new QueryClient()
 
-const Page: React.FC<{ children: ReactNode }> = ({ children }) => {
+const BasePage: React.FC<{ children: ReactNode }> = ({ children }) => {
   const theme = useThemeContext()
 
   return (
@@ -38,7 +40,7 @@ const Page: React.FC<{ children: ReactNode }> = ({ children }) => {
   )
 }
 
-export default function App({ Component, pageProps }: AppProps) {
+const App: AppType = ({ Component, pageProps }: AppProps) => {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient())
 
   return (
@@ -49,12 +51,14 @@ export default function App({ Component, pageProps }: AppProps) {
             supabaseClient={supabaseClient}
             initialSession={pageProps.initialSession}
           >
-            <Page>
+            <BasePage>
               <Component {...pageProps} />
-            </Page>
+            </BasePage>
           </SessionContextProvider>
         </ThemeContextProvider>
       </ThemeProvider>
     </QueryClientProvider>
   )
 }
+
+export default trpc.withTRPC(App)
