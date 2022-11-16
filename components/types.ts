@@ -3,4 +3,5 @@ export type Entry = {
   content: object | null
   createdAt: string
   lastUpdated: string
+  title: string | null
 }
