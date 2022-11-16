@@ -1,10 +1,9 @@
-import React, { useCallback } from "react"
+import React, { useEffect } from "react"
 import { Button, Flex, Text } from "rebass"
 import { useThemeContext } from "../../../theme"
 import { DateTime } from "luxon"
-import axios from "axios"
-import { BackendEntry, Entry } from "../types"
-import { transformBackendEntry } from "../utils"
+import { Entry } from "../../types"
+import { trpc } from "../../../utils/trpc"
 
 type SidePanelProps = {
   onAddNewEntry: (entry: Entry) => void
@@ -14,10 +13,9 @@ export const SidePanel: React.FC<SidePanelProps> = ({ onAddNewEntry }) => {
   const theme = useThemeContext()
   const todaysDate = DateTime.now()
 
-  const onClick = useCallback(async () => {
-    const response = await axios.post<{ entry: BackendEntry }>("/api/entries")
-    onAddNewEntry(transformBackendEntry(response.data.entry))
-  }, [onAddNewEntry])
+  const { mutate } = trpc.addEntry.useMutation({
+    onSuccess: ({ entry }) => onAddNewEntry(entry),
+  })
 
   return (
     <Flex
@@ -41,7 +39,7 @@ export const SidePanel: React.FC<SidePanelProps> = ({ onAddNewEntry }) => {
       </Flex>
       <Flex sx={{ justifyContent: "flex-end", padding: "4px" }}>
         <Button
-          onClick={onClick}
+          onClick={() => mutate()}
           sx={{
             backgroundColor: theme.colors.background,
             color: theme.colors.content,

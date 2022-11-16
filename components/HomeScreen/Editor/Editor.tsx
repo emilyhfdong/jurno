@@ -1,13 +1,12 @@
 import { DateTime } from "luxon"
-import React, { useCallback, useState } from "react"
+import React, { useState } from "react"
 import { Flex, Text } from "rebass"
 import { useThemeContext } from "../../../theme"
-import { useEditor, EditorContent, JSONContent } from "@tiptap/react"
+import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import axios from "axios"
-import { BackendEntry, Entry } from "../types"
-import { transformBackendEntry } from "../utils"
+import { Entry } from "../../types"
 import { DATE_FORMAT } from "../constants"
+import { trpc } from "../../../utils/trpc"
 
 type EditorProps = {
   initialEntry: Entry
@@ -40,7 +39,7 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
     content: "",
     autofocus: true,
     onUpdate: ({ editor }) => {
-      debounce(() => saveEntry(editor.getJSON()))
+      debounce(() => mutate({ content: editor.getJSON(), id: initialEntry.id }))
     },
   })
   const [persistedStringifiedContent, setPersistedStringifiedContent] =
@@ -48,19 +47,10 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
 
   const startDate = DateTime.fromISO(initialEntry.createdAt)
 
-  const saveEntry = useCallback(
-    async (jsonContent: JSONContent) => {
-      const response = await axios.patch<{ entry: BackendEntry }>(
-        `/api/entries/${initialEntry.id}`,
-        {
-          content: jsonContent,
-        }
-      )
-      const newEntry = transformBackendEntry(response.data.entry)
-      setPersistedStringifiedContent(JSON.stringify(newEntry.content))
-    },
-    [initialEntry.id]
-  )
+  const { mutate } = trpc.updateEntry.useMutation({
+    onSuccess: ({ entry: { content } }) =>
+      setPersistedStringifiedContent(JSON.stringify(content)),
+  })
 
   const isSaved =
     persistedStringifiedContent === JSON.stringify(editor?.getJSON())
