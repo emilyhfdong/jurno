@@ -1,6 +1,4 @@
-import React, { useEffect } from "react"
-import { Button, Flex, Text } from "rebass"
-import { useThemeContext } from "../../../theme"
+import React from "react"
 import { DateTime } from "luxon"
 import { Entry } from "../../types"
 import { trpc } from "../../../utils/trpc"
@@ -10,7 +8,6 @@ type SidePanelProps = {
 }
 
 export const SidePanel: React.FC<SidePanelProps> = ({ onAddNewEntry }) => {
-  const theme = useThemeContext()
   const todaysDate = DateTime.now()
 
   const { mutate } = trpc.addEntry.useMutation({
@@ -18,44 +15,19 @@ export const SidePanel: React.FC<SidePanelProps> = ({ onAddNewEntry }) => {
   })
 
   return (
-    <Flex
-      sx={{
-        flex: 1,
-        border: `1.5px solid ${theme.colors.content}`,
-        padding: 16,
-        flexDirection: "column",
-        backgroundColor: theme.colors.content,
-        color: theme.colors.background,
-        justifyContent: "space-between",
-      }}
-    >
-      <Flex sx={{ flex: 1, flexDirection: "column" }}>
-        <Text sx={{ fontFamily: theme.fonts.serif, fontSize: 24 }}>
-          {todaysDate.weekdayLong}
-        </Text>
-        <Text sx={{ fontSize: 12, marginTop: "4px" }}>
-          {todaysDate.toFormat("MMM d, yyyy")}
-        </Text>
-      </Flex>
-      <Flex sx={{ justifyContent: "flex-end", padding: "4px" }}>
-        <Button
+    <div className="flex flex-1 flex-col border border-black p-4 bg-black text-white justify-between">
+      <div className="flex flex-1 flex-col">
+        <p className="font-serif text-2xl">{todaysDate.weekdayLong}</p>
+        <p className="text-xs mt-1">{todaysDate.toFormat("MMM d, yyyy")}</p>
+      </div>
+      <div className="flex p-1 justify-end">
+        <button
           onClick={() => mutate()}
-          sx={{
-            backgroundColor: theme.colors.background,
-            color: theme.colors.content,
-            borderRadius: 0,
-            height: 30,
-            width: 30,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            transform: "rotate(45deg)",
-            cursor: "pointer",
-          }}
+          className="bg-white text-black rounded-none h-[30px] w-[30px] origin-center rotate-45 cursor-pointer"
         >
-          <i style={{ transform: "rotate(45deg)" }} className="ri-add-line"></i>
-        </Button>
-      </Flex>
-    </Flex>
+          <i className="ri-add-line origin-center rotate-45"></i>
+        </button>
+      </div>
+    </div>
   )
 }

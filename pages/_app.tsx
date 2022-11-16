@@ -5,10 +5,9 @@ import { ReactNode, useState } from "react"
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { ThemeProvider } from "@emotion/react"
 import theme from "@rebass/preset"
-import { ThemeContextProvider, useThemeContext } from "../theme"
+import { ThemeContextProvider } from "../theme"
 
 import React from "react"
-import { Flex } from "rebass"
 import { Header } from "../components/shared"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import Head from "next/head"
@@ -18,25 +17,14 @@ import { trpc } from "../utils/trpc"
 const queryClient = new QueryClient()
 
 const BasePage: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const theme = useThemeContext()
-
   return (
-    <Flex
-      sx={{
-        backgroundColor: theme.colors.background,
-        minHeight: "100vh",
-        fontFamily: theme.fonts.sansSerif,
-        paddingTop: 0,
-        flexDirection: "column",
-        fontSize: 14,
-      }}
-    >
+    <div className="bg-white min-h-screen font-sans flex flex-col text-sm">
       <Head>
         <title>jurno</title>
       </Head>
       <Header />
       {children}
-    </Flex>
+    </div>
   )
 }
 

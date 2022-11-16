@@ -1,38 +1,19 @@
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
 import React from "react"
-import { Box, Flex, Text } from "rebass"
 import { Button } from "./Button"
-import { useThemeContext } from "../../theme"
 import { StarIcon } from "./StarIcon"
 
 type HeaderProps = {}
 
 export const Header: React.FC<HeaderProps> = () => {
-  const theme = useThemeContext()
   const session = useSession()
   const client = useSupabaseClient()
   const router = useRouter()
   return (
-    <Flex
-      sx={{
-        height: "70px",
-        borderBottom: `1.5px solid ${theme.colors.content}`,
-        paddingX: "24px",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
-    >
+    <div className="h-20 border-b border-black flex items-center justify-between px-6">
       <StarIcon />
-      <Text
-        sx={{
-          fontSize: 12,
-          fontWeight: 500,
-          letterSpacing: "1.5px",
-        }}
-      >
-        jurno
-      </Text>
+      <p className="text-xs font-medium tracking-widest">jurno</p>
       {session ? (
         <Button
           onClick={async () => {
@@ -42,8 +23,8 @@ export const Header: React.FC<HeaderProps> = () => {
           text="log out"
         />
       ) : (
-        <Box />
+        <div />
       )}
-    </Flex>
+    </div>
   )
 }
