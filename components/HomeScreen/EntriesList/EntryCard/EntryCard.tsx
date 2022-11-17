@@ -26,7 +26,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({
   })
 
   return (
-    <div className="border border-black w-[300px] p-4 justify-between flex flex-col">
+    <div className="border border-black w-[300px] p-4 justify-between flex flex-col mb-4">
       <div className="flex flex-1 justify-between items-end mb-4">
         <p className="text-xs text-grey">
           {DateTime.fromISO(createdAt).toFormat(DATE_FORMAT)}

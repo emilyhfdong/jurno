@@ -23,9 +23,11 @@ export const SidePanel: React.FC<SidePanelProps> = ({ onAddNewEntry }) => {
       <div className="flex p-1 justify-end">
         <button
           onClick={() => mutate()}
-          className="bg-white text-black rounded-none h-[30px] w-[30px] origin-center rotate-45 cursor-pointer"
+          className="bg-white text-black rounded-none h-[30px] w-[30px] rotate-45 cursor-pointer"
         >
-          <i className="ri-add-line origin-center rotate-45"></i>
+          <div className="rotate-45">
+            <i className="ri-add-line md:transform-none font-semibold"></i>
+          </div>
         </button>
       </div>
     </div>
