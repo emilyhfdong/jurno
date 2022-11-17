@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query"
 import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { DateTime } from "luxon"
@@ -19,10 +20,12 @@ export const EntryCard: React.FC<EntryCardProps> = ({
     editable: false,
   })
 
-  const utils = trpc.useContext()
-
+  const queryClient = useQueryClient()
   const { isLoading, mutate } = trpc.deleteEntry.useMutation({
-    onSuccess: () => utils.allEntries.invalidate(),
+    onSettled: () => {
+      // TODO - make this work instead: utils.allEntries.invalidate()
+      queryClient.invalidateQueries([["allEntries"], { type: "query" }])
+    },
   })
 
   return (
