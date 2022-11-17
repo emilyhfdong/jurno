@@ -1,8 +1,26 @@
 import { TRPCError } from "@trpc/server"
+import { DateTime } from "luxon"
 import { z } from "zod"
 import { encrypt } from "../encrypt"
 import { protectedProcedure, router } from "../trpc"
 import { getDecriptedEntry } from "../utils"
+
+const getTimeOfDay = (dateTime: DateTime) => {
+  const hour = dateTime.hour
+  if (hour < 6) {
+    return "Early morning"
+  }
+
+  if (hour < 12) {
+    return "Morning"
+  }
+
+  if (hour < 18) {
+    return "Afternoon"
+  }
+
+  return "Evening"
+}
 
 export const appRouter = router({
   allEntries: protectedProcedure.query(async ({ ctx: { client, user } }) => {
@@ -16,9 +34,12 @@ export const appRouter = router({
     }
   }),
   addEntry: protectedProcedure.mutation(async ({ ctx: { client, user } }) => {
+    const date = DateTime.now()
+
+    const title = `${date.weekdayLong} ${getTimeOfDay(date)} Entry`
     const response = await client
       .from("entries")
-      .insert({ user_id: user.id })
+      .insert({ user_id: user.id, title: encrypt(title) })
       .select("*")
       .single()
 
@@ -33,21 +54,20 @@ export const appRouter = router({
   updateEntry: protectedProcedure
     .input(
       z.object({
-        content: z.object({}).passthrough(),
         id: z.string().uuid(),
+        content: z.object({}).passthrough().optional(),
         title: z.string().optional(),
       })
     )
     .mutation(
       async ({ ctx: { client, user }, input: { content, id, title } }) => {
-        const encryptedContent = encrypt(JSON.stringify(content))
         const response = await client
           .from("entries")
           .update({
             id,
             user_id: user.id,
-            content: encryptedContent,
-            title: title ? encrypt(title) : null,
+            ...(content && { content: encrypt(JSON.stringify(content)) }),
+            ...(title && { title: encrypt(title) }),
           })
           .select("*")
           .single()
