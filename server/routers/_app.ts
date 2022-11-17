@@ -34,7 +34,7 @@ export const appRouter = router({
     .input(
       z.object({
         content: z.object({}).passthrough(),
-        id: z.string(),
+        id: z.string().uuid(),
         title: z.string().optional(),
       })
     )
@@ -60,6 +60,24 @@ export const appRouter = router({
         return { entry: getDecriptedEntry(newEntry) }
       }
     ),
+  deleteEntry: protectedProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx: { client }, input: { id } }) => {
+      const response = await client
+        .from("entries")
+        .delete()
+        .eq("id", id)
+        .select("*")
+
+      if (response.error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: response.error.message,
+        })
+      }
+
+      return { success: true }
+    }),
 })
 
 export type AppRouter = typeof appRouter

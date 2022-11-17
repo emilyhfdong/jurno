@@ -18,6 +18,9 @@ module.exports = {
       borderWidth: {
         DEFAULT: "1.5px",
       },
+      animation: {
+        "spin-slow": "spin 2s linear infinite",
+      },
     },
   },
   plugins: [],
