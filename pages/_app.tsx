@@ -3,9 +3,6 @@ import type { AppProps } from "next/app"
 import { SessionContextProvider } from "@supabase/auth-helpers-react"
 import { ReactNode, useState } from "react"
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
-import { ThemeProvider } from "@emotion/react"
-import theme from "@rebass/preset"
-import { ThemeContextProvider } from "../theme"
 
 import React from "react"
 import { Header } from "../components/shared"
@@ -33,18 +30,14 @@ const App: AppType = ({ Component, pageProps }: AppProps) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <ThemeContextProvider>
-          <SessionContextProvider
-            supabaseClient={supabaseClient}
-            initialSession={pageProps.initialSession}
-          >
-            <BasePage>
-              <Component {...pageProps} />
-            </BasePage>
-          </SessionContextProvider>
-        </ThemeContextProvider>
-      </ThemeProvider>
+      <SessionContextProvider
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}
+      >
+        <BasePage>
+          <Component {...pageProps} />
+        </BasePage>
+      </SessionContextProvider>
     </QueryClientProvider>
   )
 }

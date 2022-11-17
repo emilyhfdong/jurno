@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { Flex } from "rebass"
 import { Editor } from "./Editor"
 import { EntriesList } from "./EntriesList"
 import { SidePanel } from "./SidePanel"

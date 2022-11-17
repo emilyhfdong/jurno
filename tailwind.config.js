@@ -5,19 +5,20 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    fontFamily: {
-      sans: ["Work Sans", "sans-serif"],
-      serif: ["DM Serif Text", "serif"],
+    extend: {
+      fontFamily: {
+        sans: ["Work Sans", "sans-serif"],
+        serif: ["DM Serif Text", "serif"],
+      },
+      colors: {
+        black: "#0D0E17",
+        white: "#FBF4E8",
+        grey: "#9F9C94",
+      },
+      borderWidth: {
+        DEFAULT: "1.5px",
+      },
     },
-    colors: {
-      black: "#0D0E17",
-      white: "#FBF4E8",
-      grey: "#9F9C94",
-    },
-    borderWidth: {
-      DEFAULT: "1.5px",
-    },
-    extend: {},
   },
   plugins: [],
 }

@@ -1,7 +1,5 @@
 import { DateTime } from "luxon"
-import React, { useState } from "react"
-import { Flex, Text } from "rebass"
-import { useThemeContext } from "../../../theme"
+import React, { useRef, useState } from "react"
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { Entry } from "../../types"
@@ -32,7 +30,7 @@ const INITIAL_EDITOR_JSON = {
 }
 
 export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
-  const theme = useThemeContext()
+  const ref = useRef<HTMLDivElement>(null)
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -41,6 +39,7 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
     onUpdate: ({ editor }) => {
       debounce(() => mutate({ content: editor.getJSON(), id: initialEntry.id }))
     },
+    editorProps: { attributes: { class: "bg-red-10" } },
   })
   const [persistedStringifiedContent, setPersistedStringifiedContent] =
     useState(JSON.stringify(initialEntry.content ?? INITIAL_EDITOR_JSON))
@@ -56,37 +55,15 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
     persistedStringifiedContent === JSON.stringify(editor?.getJSON())
 
   return (
-    <Flex
-      sx={{
-        flex: 1,
-        padding: 16,
-        border: `1.5px solid ${theme.colors.content}`,
-        flexDirection: "column",
-      }}
-    >
-      <Flex
-        sx={{
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 24,
-          color: theme.colors.secondaryContent,
-        }}
-      >
-        <Text sx={{ fontSize: 12 }}>{startDate.toFormat(DATE_FORMAT)}</Text>
+    <div className="flex flex-1 flex-col p-4 border border-black">
+      <div className="flex justify-between items-center mb-6 text-grey">
+        <p className="text-xs">{startDate.toFormat(DATE_FORMAT)}</p>
         {isSaved && <i className="ri-check-line"></i>}
-      </Flex>
+      </div>
 
-      <Flex
-        sx={{
-          flex: 1,
-          "div:first-of-type": {
-            width: "100%",
-            height: "100%",
-          },
-        }}
-      >
+      <div ref={ref} className="h-screen [&_div]:h-full ">
         <EditorContent editor={editor} />
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   )
 }

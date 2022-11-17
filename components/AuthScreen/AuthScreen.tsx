@@ -1,33 +1,15 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import { Auth, ThemeMinimal } from "@supabase/auth-ui-react"
 import React from "react"
-import { Flex, Text } from "rebass"
-import { useThemeContext } from "../../theme"
 
 type AuthScreenProps = {}
 
 export const AuthScreen: React.FC<AuthScreenProps> = () => {
-  const theme = useThemeContext()
   const client = useSupabaseClient()
   return (
-    <Flex
-      sx={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        fontFamily: theme.fonts.sansSerif,
-      }}
-    >
-      <Flex
-        sx={{
-          padding: "12px",
-          flexDirection: "column",
-          width: "40vw",
-        }}
-      >
-        <Text sx={{ fontSize: "36px", marginBottom: "24px" }}>
-          Welcome back
-        </Text>
+    <div className="flex flex-1 justify-center items-center font-sans">
+      <div className="flex flex-col p4 w-[40vw]">
+        <p className="text-4xl mb-6">Welcome back</p>
         <Auth
           supabaseClient={client}
           appearance={{
@@ -60,7 +42,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = () => {
             },
           }}
         />
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   )
 }
