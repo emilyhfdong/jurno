@@ -60,7 +60,8 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
     onUpdate: ({ editor }) => {
       debounce(() => mutate({ content: editor.getJSON(), id: initialEntry.id }))
     },
-    autofocus: true,
+    autofocus: !Boolean(initialEntry.content),
+    content: initialEntry.content,
   })
 
   const isSaved =

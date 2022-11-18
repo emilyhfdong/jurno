@@ -3,6 +3,8 @@ import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { DateTime } from "luxon"
 import React from "react"
+import { useDispatch } from "react-redux"
+import { appActions } from "../../../../redux/slices/appSlice"
 import { trpc } from "../../../../utils/trpc"
 import { Entry } from "../../../types"
 import { DATE_FORMAT } from "../../constants"
@@ -11,9 +13,8 @@ type EntryCardProps = {
   entry: Entry
 }
 
-export const EntryCard: React.FC<EntryCardProps> = ({
-  entry: { content, createdAt, id, title },
-}) => {
+export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
+  const { content, createdAt, id, title } = entry
   const editor = useEditor({
     extensions: [StarterKit],
     content,
@@ -27,9 +28,13 @@ export const EntryCard: React.FC<EntryCardProps> = ({
       queryClient.invalidateQueries([["allEntries"], { type: "query" }])
     },
   })
+  const dispatch = useDispatch()
 
   return (
-    <div className="flex h-full cursor-pointer flex-col justify-between p-4 ">
+    <div
+      onClick={() => dispatch(appActions.setActiveEntry(entry))}
+      className="flex h-full cursor-pointer flex-col justify-between p-4 "
+    >
       <div className="mb-4 flex items-end justify-between">
         <p className="text-xs text-grey">
           {DateTime.fromISO(createdAt).toFormat(DATE_FORMAT)}
