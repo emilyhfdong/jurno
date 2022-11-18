@@ -71,7 +71,7 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
     })
 
   return (
-    <div className="flex flex-1 flex-col p-4 border border-black">
+    <div className="flex flex-1 h-full flex-col p-4 border border-black">
       <div className="flex justify-between items-center mb-2 text-grey">
         <p className="text-xs">{startDate.toFormat(DATE_FORMAT)}</p>
         <i className={`ri-check-line ${isSaved ? "" : "text-transparent"}`}></i>
@@ -83,7 +83,7 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
           onChange={(e) => onTitleChange(e.target.value)}
         />
       </div>
-      <div className="h-screen [&_div]:h-full ">
+      <div className="h-full [&_div]:h-full ">
         <EditorContent editor={contentEditor} />
       </div>
     </div>

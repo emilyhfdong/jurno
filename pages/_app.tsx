@@ -11,12 +11,14 @@ import Head from "next/head"
 import type { AppType } from "next/app"
 import { trpc } from "../utils/trpc"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import { Provider } from "react-redux"
+import { store } from "../redux/store"
 
 const queryClient = new QueryClient()
 
 const BasePage: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
-    <div className="bg-white min-h-screen font-sans flex flex-col text-sm">
+    <div className="flex min-h-screen flex-col bg-white font-sans text-sm">
       <Head>
         <title>jurno</title>
       </Head>
@@ -30,17 +32,19 @@ const App: AppType = ({ Component, pageProps }: AppProps) => {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient())
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools />
-      <SessionContextProvider
-        supabaseClient={supabaseClient}
-        initialSession={pageProps.initialSession}
-      >
-        <BasePage>
-          <Component {...pageProps} />
-        </BasePage>
-      </SessionContextProvider>
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools />
+        <SessionContextProvider
+          supabaseClient={supabaseClient}
+          initialSession={pageProps.initialSession}
+        >
+          <BasePage>
+            <Component {...pageProps} />
+          </BasePage>
+        </SessionContextProvider>
+      </QueryClientProvider>
+    </Provider>
   )
 }
 

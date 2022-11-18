@@ -29,8 +29,8 @@ export const EntryCard: React.FC<EntryCardProps> = ({
   })
 
   return (
-    <div className="border border-black w-[300px] p-4 justify-between flex flex-col mb-4 cursor-pointer">
-      <div className="flex flex-1 justify-between items-end mb-4">
+    <div className="flex h-full cursor-pointer flex-col justify-between p-4 ">
+      <div className="mb-4 flex items-end justify-between">
         <p className="text-xs text-grey">
           {DateTime.fromISO(createdAt).toFormat(DATE_FORMAT)}
         </p>
@@ -39,13 +39,15 @@ export const EntryCard: React.FC<EntryCardProps> = ({
         ) : (
           <i
             onClick={() => mutate({ id })}
-            className="ri-delete-bin-line text-red-400 cursor-pointer text-xs"
+            className="ri-delete-bin-line cursor-pointer text-xs text-red-400"
           ></i>
         )}
       </div>
       <div className="flex flex-col">
-        <p className="font-serif text-2xl mb-4">{title}</p>
-        <EditorContent editor={editor} />
+        <p className="mb-4 font-serif text-xl">{title}</p>
+        <div className="text-sm">
+          <EditorContent editor={editor} />
+        </div>
       </div>
     </div>
   )

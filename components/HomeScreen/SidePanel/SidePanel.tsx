@@ -1,32 +1,33 @@
 import React from "react"
 import { DateTime } from "luxon"
-import { Entry } from "../../types"
 import { trpc } from "../../../utils/trpc"
+import { useDispatch } from "react-redux"
+import { appActions } from "../../../redux/slices/appSlice"
 
 type SidePanelProps = {
-  onAddNewEntry: (entry: Entry) => void
 }
 
-export const SidePanel: React.FC<SidePanelProps> = ({ onAddNewEntry }) => {
+export const SidePanel: React.FC<SidePanelProps> = () => {
   const todaysDate = DateTime.now()
+  const dispatch = useDispatch()
 
   const { mutate } = trpc.addEntry.useMutation({
-    onSuccess: ({ entry }) => onAddNewEntry(entry),
+    onSuccess: ({ entry }) => dispatch(appActions.setActiveEntry(entry)),
   })
 
   return (
-    <div className="flex flex-1 flex-col border border-black p-4 bg-black text-white justify-between">
+    <div className="flex h-full flex-1 flex-col justify-between border border-black bg-black p-4 text-white">
       <div className="flex flex-1 flex-col">
         <p className="font-serif text-2xl">{todaysDate.weekdayLong}</p>
-        <p className="text-xs mt-1">{todaysDate.toFormat("MMM d, yyyy")}</p>
+        <p className="mt-1 text-xs">{todaysDate.toFormat("MMM d, yyyy")}</p>
       </div>
-      <div className="flex p-1 justify-end">
+      <div className="flex justify-end p-1">
         <button
           onClick={() => mutate()}
-          className="bg-white text-black rounded-none h-[30px] w-[30px] rotate-45 cursor-pointer"
+          className="h-[30px] w-[30px] rotate-45 cursor-pointer rounded-none bg-white text-black"
         >
           <div className="rotate-45">
-            <i className="ri-add-line md:transform-none font-semibold"></i>
+            <i className="ri-add-line font-semibold md:transform-none"></i>
           </div>
         </button>
       </div>
