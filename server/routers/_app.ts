@@ -101,8 +101,10 @@ export const appRouter = router({
     }),
   updatePin: protectedProcedure
     .input(z.object({ pin: z.string().regex(/^\d+$/).length(4) }))
-    .mutation(async ({ ctx: { client }, input: { pin } }) => {
-      const response = await client.from("users").update({ pin: encrypt(pin) })
+    .mutation(async ({ ctx: { client, user }, input: { pin } }) => {
+      const response = await client
+        .from("users")
+        .update({ pin: encrypt(pin), id: user.id })
       if (response.error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
