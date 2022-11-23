@@ -43,7 +43,10 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
           <i className="ri-loader-line animate-spin-slow"></i>
         ) : (
           <i
-            onClick={() => mutate({ id })}
+            onClick={(e) => {
+              mutate({ id })
+              e.stopPropagation()
+            }}
             className="ri-delete-bin-line cursor-pointer text-xs text-red-400"
           ></i>
         )}

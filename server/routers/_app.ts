@@ -28,6 +28,7 @@ export const appRouter = router({
       .from("entries")
       .select("*")
       .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
 
     return {
       entries: response.data?.map(getDecriptedEntry) || [],

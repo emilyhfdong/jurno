@@ -28,7 +28,7 @@ export const EntriesList: React.FC<EntriesListProps> = ({ height }) => {
           >
             {boxes.map((box, idx) => (
               <div
-                key={idx}
+                key={typeof box === "string" ? "SIDEPANEL" : box.id}
                 className={`${
                   GRID_FORMATS[batchIdx % 2][idx]
                 } h-full w-full border border-black`}
