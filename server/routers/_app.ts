@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server"
 import { DateTime } from "luxon"
 import { z } from "zod"
-import { encrypt } from "../encrypt"
+import { decrypt, encrypt } from "../encrypt"
 import { protectedProcedure, router } from "../trpc"
 import { getDecriptedEntry } from "../utils"
 
@@ -99,6 +99,61 @@ export const appRouter = router({
 
       return { success: true }
     }),
+  updatePin: protectedProcedure
+    .input(z.object({ pin: z.string().regex(/^\d+$/).length(4) }))
+    .mutation(async ({ ctx: { client }, input: { pin } }) => {
+      const response = await client.from("users").update({ pin: encrypt(pin) })
+      if (response.error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: response.error.message,
+        })
+      }
+      return { success: true }
+    }),
+  checkPin: protectedProcedure
+    .input(z.object({ pin: z.string().regex(/^\d+$/).length(4) }))
+    .mutation(async ({ ctx: { client, user }, input: { pin } }) => {
+      const response = await client
+        .from("users")
+        .select("*")
+        .eq("id", user.id)
+        .single()
+      if (response.error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: response.error.message,
+        })
+      }
+
+      if (!response.data.pin) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "User has not set up pin",
+        })
+      }
+      return { correct: pin === decrypt(response.data.pin) }
+    }),
+  user: protectedProcedure.query(async ({ ctx: { client, user } }) => {
+    const response = await client
+      .from("users")
+      .select("*")
+      .eq("id", user.id)
+      .single()
+
+    if (!response.data) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: response.error.message,
+      })
+    }
+    return {
+      user: {
+        id: response.data.id,
+        hasPin: !!response.data.pin,
+      },
+    }
+  }),
 })
 
 export type AppRouter = typeof appRouter
