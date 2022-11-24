@@ -2,16 +2,21 @@ import React, { useState } from "react"
 import { trpc } from "../../../utils/trpc"
 import { useQueryClient } from "@tanstack/react-query"
 import { LoadingIcon, PinInput } from "../../shared"
+import { useDispatch } from "react-redux"
+import { appActions } from "../../../redux/slices/appSlice"
+
 type SetUpPinProps = {}
 
 export const SetUpPin: React.FC<SetUpPinProps> = () => {
   const [pin, setPin] = useState("")
   const [confirmedPin, setConfirmedPin] = useState("")
   const [mode, setMode] = useState<"setPin" | "confirmPin">("setPin")
+  const dispatch = useDispatch()
 
   const queryClient = useQueryClient()
   const { isLoading, mutate } = trpc.updatePin.useMutation({
     onSuccess: () => {
+      dispatch(appActions.setRequiresPin(false))
       queryClient.invalidateQueries([["user"], { type: "query" }])
     },
   })

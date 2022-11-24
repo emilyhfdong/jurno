@@ -1,67 +1,20 @@
-import React, { useEffect, useRef, useState } from "react"
-import { Editor } from "./Editor"
-import { EntriesList } from "./EntriesList"
+import React from "react"
 
-import { useAppSelector } from "../../redux/hooks"
-import { GRID_CLASS_NAME, GRID_FORMATS } from "./gridUtils"
-import { SidePanel } from "./SidePanel"
 import { trpc } from "../../utils/trpc"
 import { SetUpPin } from "./SetUpPin"
-import { CheckPin } from "./CheckPin"
+import { Dashboard } from "./Dashboard"
 
 type HomeScreenProps = {}
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
-  const ref = useRef<HTMLDivElement>(null)
-  const activeEntry = useAppSelector((state) => state.app.activeEntry)
-  const [isHidden, setIsHidden] = useState(true)
-
   const { data, isLoading } = trpc.user.useQuery()
 
-  const [bodyHeight, setBodyHeight] = useState<number>()
-
-  useEffect(() => {
-    if (data?.user && !data.user.hasPin) {
-      setIsHidden(false)
-    }
-  }, [data])
-
-  useEffect(() => {
-    const boundingRect = ref.current?.getBoundingClientRect()
-    if (boundingRect && !bodyHeight) {
-      setBodyHeight(boundingRect.height)
-    }
-  }, [ref, bodyHeight])
-
-  useEffect(() => {
-    const onBlur = () => {
-      setIsHidden(true)
-    }
-    window.addEventListener("blur", onBlur)
-    return () => window.removeEventListener("blur", onBlur)
-  }, [])
-
-  return (
-    <div ref={ref} className="relative flex flex-1 px-4 ">
-      {isHidden && <CheckPin onSuccess={() => setIsHidden(false)} />}
-      {!isLoading && !data?.user.hasPin && <SetUpPin />}
-      <div className="w-full">
-        {activeEntry ? (
-          <div
-            style={{ height: (bodyHeight || 0) - 16 }}
-            className={GRID_CLASS_NAME}
-          >
-            <div className={GRID_FORMATS[0][0] + " h-full w-full"}>
-              <SidePanel />
-            </div>
-            <div className="h-full w-full row-span-2 col-span-5">
-              <Editor initialEntry={activeEntry} />
-            </div>
-          </div>
-        ) : (
-          <EntriesList height={bodyHeight} />
-        )}
+  if (isLoading) {
+    return (
+      <div className="fixed top-0 left-0 h-full w-full z-10 flex flex-1 justify-center items-center bg-black text-white">
+        <i className="ri-loader-line animate-spin-slow text-2xl"></i>
       </div>
-    </div>
-  )
+    )
+  }
+  return data?.user.hasPin ? <Dashboard /> : <SetUpPin />
 }

@@ -3,10 +3,12 @@ import { Entry } from "../../components/types"
 
 interface AppState {
   activeEntry: Entry | null
+  requiresPin: boolean
 }
 
 const initialState: AppState = {
   activeEntry: null,
+  requiresPin: true,
 }
 
 export const appSlice = createSlice({
@@ -16,6 +18,10 @@ export const appSlice = createSlice({
     setActiveEntry: (state, action: PayloadAction<Entry | null>) => ({
       ...state,
       activeEntry: action.payload,
+    }),
+    setRequiresPin: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      requiresPin: action.payload,
     }),
   },
 })
