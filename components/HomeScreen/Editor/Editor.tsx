@@ -5,6 +5,7 @@ import StarterKit from "@tiptap/starter-kit"
 import { Entry } from "../../types"
 import { DATE_FORMAT } from "../constants"
 import { trpc } from "../../../utils/trpc"
+import { useAppSelector } from "../../../redux/hooks"
 
 type EditorProps = {
   initialEntry: Entry
@@ -39,6 +40,8 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
   const [persistedStringifiedContent, setPersistedStringifiedContent] =
     useState(getStringifiedEntry(initialEntry))
   const startDate = DateTime.fromISO(initialEntry.createdAt)
+
+  const isBlurred = useAppSelector((state) => state.app.isBlurred)
 
   const [title, setTitle] = useState(initialEntry.title)
 
@@ -77,14 +80,14 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
         <p className="text-xs">{startDate.toFormat(DATE_FORMAT)}</p>
         <i className={`ri-check-line ${isSaved ? "" : "text-transparent"}`}></i>
       </div>
-      <div className="font-serif text-2xl mb-4">
+      <div className={`font-serif text-2xl mb-4 ${isBlurred ? "blur-sm" : ""}`}>
         <input
           className="bg-transparent outline-none w-full"
           value={title || ""}
           onChange={(e) => onTitleChange(e.target.value)}
         />
       </div>
-      <div className="h-full [&_div]:h-full ">
+      <div className={`h-full [&_div]:h-full ${isBlurred ? "blur-sm" : ""}`}>
         <EditorContent editor={contentEditor} />
       </div>
     </div>

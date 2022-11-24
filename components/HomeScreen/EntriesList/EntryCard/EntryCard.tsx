@@ -4,6 +4,7 @@ import StarterKit from "@tiptap/starter-kit"
 import { DateTime } from "luxon"
 import React from "react"
 import { useDispatch } from "react-redux"
+import { useAppSelector } from "../../../../redux/hooks"
 import { appActions } from "../../../../redux/slices/appSlice"
 import { trpc } from "../../../../utils/trpc"
 import { Entry } from "../../../types"
@@ -20,6 +21,8 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
     content,
     editable: false,
   })
+
+  const isBlurred = useAppSelector((state) => state.app.isBlurred)
 
   const queryClient = useQueryClient()
   const { isLoading, mutate } = trpc.deleteEntry.useMutation({
@@ -51,9 +54,9 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
           ></i>
         )}
       </div>
-      <div className="flex flex-col">
+      <div className={`flex flex-col ${isBlurred && "blur-sm"}`}>
         <p className="mb-4 font-serif text-xl">{title}</p>
-        <div className="text-sm">
+        <div className="text-sm ">
           <EditorContent editor={editor} />
         </div>
       </div>

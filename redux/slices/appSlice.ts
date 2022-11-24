@@ -4,11 +4,13 @@ import { Entry } from "../../components/types"
 interface AppState {
   activeEntry: Entry | null
   requiresPin: boolean
+  isBlurred: boolean
 }
 
 const initialState: AppState = {
   activeEntry: null,
   requiresPin: true,
+  isBlurred: false,
 }
 
 export const appSlice = createSlice({
@@ -22,6 +24,10 @@ export const appSlice = createSlice({
     setRequiresPin: (state, action: PayloadAction<boolean>) => ({
       ...state,
       requiresPin: action.payload,
+    }),
+    setIsBlurred: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      isBlurred: action.payload,
     }),
   },
 })
