@@ -10,6 +10,8 @@ import { SidePanel } from "./SidePanel"
 
 type DashboardProps = {}
 
+const IS_DEVELOPMENT = process.env.NODE_ENV === "development"
+
 export const Dashboard: React.FC<DashboardProps> = () => {
   const ref = useRef<HTMLDivElement>(null)
   const activeEntry = useAppSelector((state) => state.app.activeEntry)
@@ -35,7 +37,7 @@ export const Dashboard: React.FC<DashboardProps> = () => {
 
   return (
     <div ref={ref} className="relative flex flex-1 px-4 ">
-      {requiresPin && <CheckPin />}
+      {requiresPin && !IS_DEVELOPMENT && <CheckPin />}
       <div className="w-full">
         {activeEntry ? (
           <div
