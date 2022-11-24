@@ -4,7 +4,6 @@ import { trpc } from "../../../utils/trpc"
 import { useDispatch } from "react-redux"
 import { appActions } from "../../../redux/slices/appSlice"
 import { useAppSelector } from "../../../redux/hooks"
-import { useQueryClient } from "@tanstack/react-query"
 
 type SidePanelProps = {}
 
@@ -17,16 +16,16 @@ export const SidePanel: React.FC<SidePanelProps> = () => {
     onSuccess: ({ entry }) => dispatch(appActions.setActiveEntry(entry)),
   })
 
-  const queryClient = useQueryClient()
+  const utils = trpc.useContext()
 
   const onButtonClick = useCallback(() => {
     if (activeEntry) {
-      queryClient.invalidateQueries([["allEntries"], { type: "query" }])
+      utils.allEntries.invalidate()
       dispatch(appActions.setActiveEntry(null))
       return
     }
     mutate()
-  }, [mutate, activeEntry, queryClient, dispatch])
+  }, [mutate, activeEntry, utils, dispatch])
 
   return (
     <div className="flex h-full flex-1 flex-col justify-between border border-black bg-black p-4 text-white">

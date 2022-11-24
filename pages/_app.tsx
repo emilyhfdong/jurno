@@ -6,15 +6,12 @@ import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
 import React from "react"
 import { Header } from "../components/shared"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import Head from "next/head"
 import type { AppType } from "next/app"
 import { trpc } from "../utils/trpc"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { Provider } from "react-redux"
 import { store } from "../redux/store"
-
-const queryClient = new QueryClient()
 
 const BasePage: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
@@ -33,17 +30,15 @@ const App: AppType = ({ Component, pageProps }: AppProps) => {
 
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools />
-        <SessionContextProvider
-          supabaseClient={supabaseClient}
-          initialSession={pageProps.initialSession}
-        >
-          <BasePage>
-            <Component {...pageProps} />
-          </BasePage>
-        </SessionContextProvider>
-      </QueryClientProvider>
+      <ReactQueryDevtools />
+      <SessionContextProvider
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}
+      >
+        <BasePage>
+          <Component {...pageProps} />
+        </BasePage>
+      </SessionContextProvider>
     </Provider>
   )
 }

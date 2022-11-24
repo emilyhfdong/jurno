@@ -69,6 +69,7 @@ export const appRouter = router({
             user_id: user.id,
             ...(content && { content: encrypt(JSON.stringify(content)) }),
             ...(title && { title: encrypt(title) }),
+            last_updated: new Date().toISOString().toLocaleString(),
           })
           .select("*")
           .single()
