@@ -29,14 +29,29 @@ a {
   }
 }
 
-.ProseMirror {
-  outline: none;
-
-  flex: 1;
+@layer base {
+  ul,
+  ol {
+    list-style: revert;
+    margin: revert;
+    padding: revert;
+  }
 }
 
-.ProseMirror p,
-ul,
-ol {
-  margin-top: 0;
+.ProseMirror {
+  outline: none;
+  flex: 1;
+  white-space: pre-wrap;
+}
+
+.ProseMirror p {
+  margin-bottom: 1rem;
+}
+
+.ProseMirror ul p {
+  margin-bottom: 0;
+}
+
+.ProseMirror ol p {
+  margin-bottom: 0;
 }

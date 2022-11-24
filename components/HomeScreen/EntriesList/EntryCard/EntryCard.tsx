@@ -22,8 +22,10 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
   })
 
   useEffect(() => {
-    editor?.commands.setContent(entry.content)
-  }, [entry.content, editor?.commands])
+    if (editor) {
+      editor.commands.setContent(entry.content)
+    }
+  }, [entry.content, editor])
 
   const isBlurred = useAppSelector((state) => state.app.isBlurred)
 
@@ -57,10 +59,13 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
           ></i>
         )}
       </div>
-      <div className={`flex flex-col ${isBlurred && "blur-sm"}`}>
-        <p className="mb-4 font-serif text-xl">{title}</p>
-        {DateTime.fromISO(entry.lastUpdated).toFormat("h:mma")}
-        <div className="text-sm ">
+      <div
+        className={`flex flex-col ${
+          isBlurred ? "blur-sm" : ""
+        } max-h-[30%] overflow-hidden`}
+      >
+        <p className="mb-3 font-serif text-xl">{title}</p>
+        <div className="text-sm">
           <EditorContent editor={editor} />
         </div>
       </div>
