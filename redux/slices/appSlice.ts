@@ -7,9 +7,11 @@ interface AppState {
   isBlurred: boolean
 }
 
+const IS_DEVELOPMENT = process.env.NODE_ENV === "development"
+
 const initialState: AppState = {
   activeEntry: null,
-  requiresPin: true,
+  requiresPin: IS_DEVELOPMENT ? false : true,
   isBlurred: false,
 }
 
@@ -23,7 +25,7 @@ export const appSlice = createSlice({
     }),
     setRequiresPin: (state, action: PayloadAction<boolean>) => ({
       ...state,
-      requiresPin: action.payload,
+      requiresPin: IS_DEVELOPMENT ? false : action.payload,
     }),
     setIsBlurred: (state, action: PayloadAction<boolean>) => ({
       ...state,
