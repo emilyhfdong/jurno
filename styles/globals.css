@@ -31,7 +31,8 @@ a {
 
 @layer base {
   ul,
-  ol {
+  ol,
+  li {
     list-style: revert;
     margin: revert;
     padding: revert;
@@ -45,7 +46,11 @@ a {
 }
 
 .ProseMirror p {
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.ProseMirror ul {
+  margin-top: 0;
 }
 
 .ProseMirror ul p {
