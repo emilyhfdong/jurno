@@ -26,17 +26,16 @@ export const Header: React.FC<HeaderProps> = () => {
           onClick={() => dispatch(appActions.setIsBlurred(!isBlurred))}
           className={`ri-eye${
             isBlurred ? "-off" : ""
-          }-line mr-4 cursor-pointer`}
+          }-line mr-3 cursor-pointer`}
         ></i>
-
         {session ? (
-          <Button
+          <i
+            className="ri-logout-box-line cursor-pointer"
             onClick={async () => {
               await client.auth.signOut()
               router.push("/login")
             }}
-            text="log out"
-          />
+          ></i>
         ) : (
           <div />
         )}
