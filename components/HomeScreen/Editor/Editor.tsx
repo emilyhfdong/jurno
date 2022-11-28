@@ -56,7 +56,7 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
   return (
     <div className="flex flex-1 h-full flex-col border border-black">
       <Toolbar editor={editor} />
-      <div className="flex flex-1 flex-col p-4">
+      <div className="flex flex-1 flex-col p-4 overflow-scroll">
         <div className="flex justify-between items-center mb-2 text-grey">
           <p className="text-xs">{startDate.toFormat(DATE_FORMAT)}</p>
           <i
