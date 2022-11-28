@@ -20,6 +20,7 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
   const startDate = DateTime.fromISO(initialEntry.createdAt)
 
   const isBlurred = useAppSelector((state) => state.app.isBlurred)
+  const requiresPin = useAppSelector((state) => state.app.requiresPin)
 
   const [title, setTitle] = useState(initialEntry.title)
 
@@ -62,18 +63,26 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
             className={`ri-check-line ${isSaved ? "" : "text-transparent"}`}
           ></i>
         </div>
-        <div
-          className={`font-serif text-2xl mb-4 ${isBlurred ? "blur-sm" : ""}`}
-        >
-          <input
-            className="bg-transparent outline-none w-full"
-            value={title || ""}
-            onChange={(e) => onTitleChange(e.target.value)}
-          />
-        </div>
-        <div className={`h-full [&_div]:h-full ${isBlurred ? "blur-sm" : ""}`}>
-          <EditorContent editor={editor} />
-        </div>
+        {!requiresPin ? (
+          <>
+            <div
+              className={`font-serif text-2xl mb-4 ${
+                isBlurred ? "blur-sm" : ""
+              }`}
+            >
+              <input
+                className="bg-transparent outline-none w-full"
+                value={title || ""}
+                onChange={(e) => onTitleChange(e.target.value)}
+              />
+            </div>
+            <div
+              className={`h-full [&_div]:h-full ${isBlurred ? "blur-sm" : ""}`}
+            >
+              <EditorContent editor={editor} />
+            </div>
+          </>
+        ) : null}
       </div>
     </div>
   )

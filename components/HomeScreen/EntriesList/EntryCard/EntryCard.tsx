@@ -20,6 +20,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
     content,
     editable: false,
   })
+  const requiresPin = useAppSelector((state) => state.app.requiresPin)
 
   useEffect(() => {
     if (editor) {
@@ -59,16 +60,18 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
           ></i>
         )}
       </div>
-      <div
-        className={`flex flex-col ${
-          isBlurred ? "blur-sm" : ""
-        } max-h-[30%] overflow-hidden`}
-      >
-        <p className="mb-3 font-serif text-xl">{title}</p>
-        <div className="text-sm">
-          <EditorContent editor={editor} />
+      {!requiresPin ? (
+        <div
+          className={`flex flex-col ${
+            isBlurred ? "blur-sm" : ""
+          } max-h-[30%] overflow-hidden`}
+        >
+          <p className="mb-3 font-serif text-xl">{title}</p>
+          <div className="text-sm">
+            <EditorContent editor={editor} />
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   )
 }
