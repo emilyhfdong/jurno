@@ -7,6 +7,23 @@ import { useAppSelector } from "../../../redux/hooks"
 
 type SidePanelProps = {}
 
+const getTimeOfDay = (dateTime: DateTime) => {
+  const hour = dateTime.hour
+  if (hour < 6) {
+    return "Early Morning"
+  }
+
+  if (hour < 12) {
+    return "Morning"
+  }
+
+  if (hour < 18) {
+    return "Afternoon"
+  }
+
+  return "Evening"
+}
+
 export const SidePanel: React.FC<SidePanelProps> = () => {
   const todaysDate = DateTime.now()
   const dispatch = useDispatch()
@@ -24,7 +41,8 @@ export const SidePanel: React.FC<SidePanelProps> = () => {
       dispatch(appActions.setActiveEntry(null))
       return
     }
-    mutate()
+    const date = DateTime.now()
+    mutate({ title: `${date.weekdayLong} ${getTimeOfDay(date)} Entry` })
   }, [mutate, activeEntry, utils, dispatch])
 
   return (

@@ -1,26 +1,8 @@
 import { TRPCError } from "@trpc/server"
-import { DateTime } from "luxon"
 import { z } from "zod"
 import { decrypt, encrypt } from "../encrypt"
 import { protectedProcedure, router } from "../trpc"
 import { getDecriptedEntry } from "../utils"
-
-const getTimeOfDay = (dateTime: DateTime) => {
-  const hour = dateTime.hour
-  if (hour < 6) {
-    return "Early morning"
-  }
-
-  if (hour < 12) {
-    return "Morning"
-  }
-
-  if (hour < 18) {
-    return "Afternoon"
-  }
-
-  return "Evening"
-}
 
 export const appRouter = router({
   allEntries: protectedProcedure.query(async ({ ctx: { client, user } }) => {
@@ -34,24 +16,23 @@ export const appRouter = router({
       entries: response.data?.map(getDecriptedEntry) || [],
     }
   }),
-  addEntry: protectedProcedure.mutation(async ({ ctx: { client, user } }) => {
-    const date = DateTime.now()
+  addEntry: protectedProcedure
+    .input(z.object({ title: z.string() }))
+    .mutation(async ({ ctx: { client, user }, input: { title } }) => {
+      const response = await client
+        .from("entries")
+        .insert({ user_id: user.id, title: encrypt(title) })
+        .select("*")
+        .single()
 
-    const title = `${date.weekdayLong} ${getTimeOfDay(date)} Entry`
-    const response = await client
-      .from("entries")
-      .insert({ user_id: user.id, title: encrypt(title) })
-      .select("*")
-      .single()
-
-    if (response.error) {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: response.error.message,
-      })
-    }
-    return { entry: getDecriptedEntry(response.data) }
-  }),
+      if (response.error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: response.error.message,
+        })
+      }
+      return { entry: getDecriptedEntry(response.data) }
+    }),
   updateEntry: protectedProcedure
     .input(
       z.object({
