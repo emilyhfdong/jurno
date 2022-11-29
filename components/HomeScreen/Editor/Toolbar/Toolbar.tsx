@@ -1,22 +1,36 @@
 import { Editor } from "@tiptap/react"
 import React from "react"
+import { useDispatch } from "react-redux"
+import { useAppSelector } from "../../../../redux/hooks"
+import { appActions } from "../../../../redux/slices/appSlice"
 import { trpc } from "../../../../utils/trpc"
 
 type ToolbarProps = {
   editor: Editor | null
-  entryId: string
-  entryHasFinished: boolean
 }
 
-export const Toolbar: React.FC<ToolbarProps> = ({
-  editor,
-  entryId,
-  entryHasFinished,
-}) => {
+export const Toolbar: React.FC<ToolbarProps> = ({ editor }) => {
   const utils = trpc.useContext()
+  const activeEntry = useAppSelector((state) => state.app.activeEntry)
+  const dispatch = useDispatch()
   const { mutate, isLoading } = trpc.finishEntry.useMutation({
-    onSuccess: () => utils.allEntries.invalidate(),
+    onSuccess: () => {
+      if (activeEntry) {
+        dispatch(
+          appActions.setActiveEntry({
+            ...activeEntry,
+            finishedAt: new Date().toISOString(),
+          })
+        )
+        utils.allEntries.invalidate()
+      }
+    },
   })
+
+  if (!activeEntry) {
+    return null
+  }
+  const { id, finishedAt } = activeEntry
 
   return (
     <div className="flex items-center justify-between p-2 border-b border-black text-lg">
@@ -60,8 +74,8 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         />
       </div>
       <ToolbarButton
-        onClick={() => !entryHasFinished && mutate({ id: entryId })}
-        isActive={entryHasFinished}
+        onClick={() => !finishedAt && mutate({ id })}
+        isActive={!!finishedAt}
         iconClassName={
           isLoading
             ? "ri-loader-line animate-spin-slow"

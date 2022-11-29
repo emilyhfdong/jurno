@@ -17,7 +17,6 @@ type EditorProps = {
 export const Editor: React.FC<EditorProps> = ({ entry }) => {
   const [persistedStringifiedContent, setPersistedStringifiedContent] =
     useState(getStringifiedEntry(entry))
-  const startDate = DateTime.fromISO(entry.createdAt)
 
   const isBlurred = useAppSelector((state) => state.app.isBlurred)
   const requiresPin = useAppSelector((state) => state.app.requiresPin)
@@ -55,11 +54,7 @@ export const Editor: React.FC<EditorProps> = ({ entry }) => {
 
   return (
     <div className="flex flex-1 h-full flex-col border border-black">
-      <Toolbar
-        editor={editor}
-        entryId={entry.id}
-        entryHasFinished={!!entry.finishedAt}
-      />
+      <Toolbar editor={editor} />
       <div className="flex flex-1 flex-col p-4 overflow-scroll">
         <div className="flex justify-between items-center mb-2 text-grey">
           <p className="text-xs">

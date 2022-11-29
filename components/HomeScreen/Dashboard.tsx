@@ -46,7 +46,7 @@ export const Dashboard: React.FC<DashboardProps> = () => {
               <SidePanel />
             </div>
             <div className="h-full w-full row-span-2 col-span-5">
-              <Editor initialEntry={activeEntry} />
+              <Editor entry={activeEntry} />
             </div>
           </div>
         ) : (
