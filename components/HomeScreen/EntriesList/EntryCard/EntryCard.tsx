@@ -1,20 +1,19 @@
 import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import { DateTime } from "luxon"
 import React, { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { useAppSelector } from "../../../../redux/hooks"
 import { appActions } from "../../../../redux/slices/appSlice"
 import { trpc } from "../../../../utils/trpc"
 import { Entry } from "../../../types"
-import { DATE_FORMAT } from "../../constants"
+import { getEntryStartEndDate } from "../../utils"
 
 type EntryCardProps = {
   entry: Entry
 }
 
 export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
-  const { content, createdAt, id, title } = entry
+  const { content, createdAt, id, title, finishedAt } = entry
   const editor = useEditor({
     extensions: [StarterKit],
     content,
@@ -46,8 +45,9 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
     >
       <div className="mb-4 flex items-end justify-between">
         <p className="text-xs text-grey">
-          {DateTime.fromISO(createdAt).toFormat(DATE_FORMAT)}
+          {getEntryStartEndDate({ createdAt, finishedAt })}
         </p>
+
         {isLoading ? (
           <i className="ri-loader-line animate-spin-slow"></i>
         ) : (

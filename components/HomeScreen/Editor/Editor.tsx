@@ -4,25 +4,25 @@ import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 
 import { Entry } from "../../types"
-import { DATE_FORMAT } from "../constants"
 import { trpc } from "../../../utils/trpc"
 import { useAppSelector } from "../../../redux/hooks"
 import { Toolbar } from "./Toolbar"
 import { debounce, getStringifiedEntry } from "./utils"
+import { getEntryStartEndDate } from "../utils"
 
 type EditorProps = {
-  initialEntry: Entry
+  entry: Entry
 }
 
-export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
+export const Editor: React.FC<EditorProps> = ({ entry }) => {
   const [persistedStringifiedContent, setPersistedStringifiedContent] =
-    useState(getStringifiedEntry(initialEntry))
-  const startDate = DateTime.fromISO(initialEntry.createdAt)
+    useState(getStringifiedEntry(entry))
+  const startDate = DateTime.fromISO(entry.createdAt)
 
   const isBlurred = useAppSelector((state) => state.app.isBlurred)
   const requiresPin = useAppSelector((state) => state.app.requiresPin)
 
-  const [title, setTitle] = useState(initialEntry.title)
+  const [title, setTitle] = useState(entry.title)
 
   const { mutate } = trpc.updateEntry.useMutation({
     onSuccess: ({ entry: { content, title } }) =>
@@ -32,18 +32,18 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
   const onTitleChange = useCallback(
     (newTitle: string) => {
       setTitle(newTitle)
-      debounce(() => mutate({ title: newTitle, id: initialEntry.id }))
+      debounce(() => mutate({ title: newTitle, id: entry.id }))
     },
-    [setTitle, initialEntry, mutate]
+    [setTitle, entry, mutate]
   )
 
   const editor = useEditor({
     extensions: [StarterKit],
     onUpdate: ({ editor }) => {
-      debounce(() => mutate({ content: editor.getJSON(), id: initialEntry.id }))
+      debounce(() => mutate({ content: editor.getJSON(), id: entry.id }))
     },
-    autofocus: !Boolean(initialEntry.content),
-    content: initialEntry.content,
+    autofocus: !Boolean(entry.content),
+    content: entry.content,
   })
 
   const isSaved =
@@ -57,12 +57,17 @@ export const Editor: React.FC<EditorProps> = ({ initialEntry }) => {
     <div className="flex flex-1 h-full flex-col border border-black">
       <Toolbar
         editor={editor}
-        entryId={initialEntry.id}
-        entryHasFinished={!!initialEntry.finishedAt}
+        entryId={entry.id}
+        entryHasFinished={!!entry.finishedAt}
       />
       <div className="flex flex-1 flex-col p-4 overflow-scroll">
         <div className="flex justify-between items-center mb-2 text-grey">
-          <p className="text-xs">{startDate.toFormat(DATE_FORMAT)}</p>
+          <p className="text-xs">
+            {getEntryStartEndDate({
+              finishedAt: entry.finishedAt,
+              createdAt: entry.createdAt,
+            })}
+          </p>
           <i
             className={`ri-check-line ${isSaved ? "" : "text-transparent"}`}
           ></i>
