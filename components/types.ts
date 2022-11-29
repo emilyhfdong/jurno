@@ -1,7 +1,6 @@
-export type Entry = {
-  id: string
-  content: object | null
-  createdAt: string
-  lastUpdated: string
-  title: string | null
-}
+import type { inferRouterOutputs } from "@trpc/server"
+import { AppRouter } from "../server/routers/_app"
+
+type RouterOutput = inferRouterOutputs<AppRouter>
+
+export type Entry = RouterOutput["allEntries"]["entries"][0]

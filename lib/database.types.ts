@@ -17,6 +17,7 @@ export interface Database {
           user_id: string
           id: string
           title: string | null
+          finished_at: string | null
         }
         Insert: {
           created_at?: string
@@ -25,6 +26,7 @@ export interface Database {
           user_id: string
           id?: string
           title?: string | null
+          finished_at?: string | null
         }
         Update: {
           created_at?: string
@@ -33,31 +35,20 @@ export interface Database {
           user_id?: string
           id?: string
           title?: string | null
+          finished_at?: string | null
         }
       }
       users: {
         Row: {
           id: string
-          updated_at: string | null
-          username: string | null
-          full_name: string | null
-          avatar_url: string | null
           pin: string | null
         }
         Insert: {
           id: string
-          updated_at?: string | null
-          username?: string | null
-          full_name?: string | null
-          avatar_url?: string | null
           pin?: string | null
         }
         Update: {
           id?: string
-          updated_at?: string | null
-          username?: string | null
-          full_name?: string | null
-          avatar_url?: string | null
           pin?: string | null
         }
       }

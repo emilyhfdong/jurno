@@ -7,6 +7,7 @@ export const getDecriptedEntry = ({
   created_at,
   last_updated,
   title,
+  finished_at,
 }: Database["public"]["Tables"]["entries"]["Row"]) => {
   return {
     id,
@@ -14,5 +15,6 @@ export const getDecriptedEntry = ({
     lastUpdated: last_updated,
     content: content ? JSON.parse(decrypt(content)) : null,
     title: title ? decrypt(title) : null,
+    finishedAt: finished_at,
   }
 }

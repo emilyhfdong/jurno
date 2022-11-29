@@ -41,28 +41,44 @@ export const appRouter = router({
         title: z.string().optional(),
       })
     )
-    .mutation(
-      async ({ ctx: { client, user }, input: { content, id, title } }) => {
-        const response = await client
-          .from("entries")
-          .update({
-            id,
-            user_id: user.id,
-            ...(content && { content: encrypt(JSON.stringify(content)) }),
-            ...(title && { title: encrypt(title) }),
-            last_updated: new Date().toISOString().toLocaleString(),
-          })
-          .select("*")
-          .single()
+    .mutation(async ({ ctx: { client }, input: { content, id, title } }) => {
+      const response = await client
+        .from("entries")
+        .update({
+          id,
+          ...(content && { content: encrypt(JSON.stringify(content)) }),
+          ...(title && { title: encrypt(title) }),
+          last_updated: new Date().toISOString().toLocaleString(),
+        })
+        .select("*")
+        .single()
 
-        const newEntry = response.data
+      const entry = response.data
 
-        if (!newEntry) {
-          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
-        }
-        return { entry: getDecriptedEntry(newEntry) }
+      if (!entry) {
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
       }
-    ),
+      return { entry: getDecriptedEntry(entry) }
+    }),
+  finishEntry: protectedProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx: { client }, input: { id } }) => {
+      const response = await client
+        .from("entries")
+        .update({
+          id,
+          finished_at: new Date().toISOString().toLocaleString(),
+        })
+        .select("*")
+        .single()
+
+      const entry = response.data
+
+      if (!entry) {
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
+      }
+      return { entry: getDecriptedEntry(entry) }
+    }),
   deleteEntry: protectedProcedure
     .input(z.object({ id: z.string().uuid() }))
     .mutation(async ({ ctx: { client }, input: { id } }) => {
