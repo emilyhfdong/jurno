@@ -29,6 +29,15 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
   const [title, setTitle] = useState(initialTitle)
   const dispatch = useDispatch()
 
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false)
+  const utils = trpc.useContext()
+
+  const { isLoading, mutate: deleteMutation } = trpc.deleteEntry.useMutation({
+    onSettled: () => {
+      utils.allEntries.invalidate()
+    },
+  })
+
   const isEditing = useAppSelector((state) => state.app.editingEntryId === id)
   const editor = useEditor({
     extensions: [StarterKit],
@@ -71,8 +80,21 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
     }
   }, [isEditing, editor])
 
+  const onDelete = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation()
+    if (isConfirmingDelete) {
+      deleteMutation({ id })
+      setIsConfirmingDelete(false)
+    } else {
+      setIsConfirmingDelete(true)
+    }
+  }
+
   return (
-    <section className="flex h-screen w-full items-center snap-center justify-between pl-32 pr-8">
+    <section
+      onClick={() => setIsConfirmingDelete(false)}
+      className="flex h-screen w-full items-center snap-center justify-between pl-32 pr-8"
+    >
       <AnimatedDate
         isVisible={!isEditing}
         date={createdAt}
@@ -104,14 +126,31 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
                 finishedAt,
               }).toLocaleLowerCase()}
             </div>
-            <div
-              onClick={() =>
-                dispatch(appActions.setEditingEntryId(isEditing ? null : id))
-              }
-              className="flex items-center cursor-pointer mt-2"
-            >
-              {isEditing ? "Done" : "Edit"}
-              <i className="ri-arrow-right-s-line"></i>
+            <div className="flex ">
+              <div
+                onClick={() =>
+                  dispatch(appActions.setEditingEntryId(isEditing ? null : id))
+                }
+                className="flex items-center cursor-pointer mt-2 mr-4"
+              >
+                {isEditing ? "Done" : "Edit"}
+                <i className="ri-arrow-right-s-line"></i>
+              </div>
+              <div
+                onClick={onDelete}
+                className={`flex items-center cursor-pointer mt-2 ${
+                  isConfirmingDelete ? "text-red" : ""
+                }`}
+              >
+                {isLoading ? (
+                  <i className="ri-loader-line animate-spin-slow"></i>
+                ) : isConfirmingDelete ? (
+                  "Click to confirm"
+                ) : (
+                  "Delete"
+                )}
+                <i className="ri-arrow-right-s-line"></i>
+              </div>
             </div>
           </div>
 
