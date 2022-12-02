@@ -29,6 +29,10 @@ a {
   }
 }
 
+html {
+  scroll-snap-type: y mandatory;
+}
+
 @layer base {
   ul,
   ol,

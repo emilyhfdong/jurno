@@ -1,10 +1,9 @@
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react"
 import { GetServerSideProps } from "next"
 
 import React from "react"
 import { AuthSession } from "@supabase/supabase-js"
-import { HomeScreen } from "../components"
+import { HomeScreen } from "../components/OldHomeScreen"
 
 type HomeProps = {
   initialSession: AuthSession

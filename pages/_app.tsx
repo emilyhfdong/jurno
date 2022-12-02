@@ -19,7 +19,7 @@ const BasePage: React.FC<{ children: ReactNode }> = ({ children }) => {
       <Head>
         <title>jurno</title>
       </Head>
-      <Header />
+      {/* <Header /> */}
       {children}
     </div>
   )
