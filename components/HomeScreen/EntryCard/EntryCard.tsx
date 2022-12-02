@@ -4,12 +4,13 @@ import React, { useRef } from "react"
 import { Entry } from "../../types"
 import { useScroll } from "framer-motion"
 import { AnimatedDate } from "./AnimatedDate/AnimatedDate"
+import { getEntryStartEndTime } from "../utils"
 
 type EntryCardProps = {
   entry: Entry
 }
 export const EntryCard: React.FC<EntryCardProps> = ({
-  entry: { content, createdAt, title },
+  entry: { content, createdAt, title, finishedAt },
 }) => {
   const editor = useEditor({
     extensions: [StarterKit],
@@ -25,9 +26,18 @@ export const EntryCard: React.FC<EntryCardProps> = ({
       <div ref={ref}>{/* dummy div to calculate scroll position */}</div>
       <div className="pt-32 pb-8 w-[70%] h-full py-8 ">
         <div className="flex border-b-4 h-full border-black p-6">
-          <div className="w-[35%] top-4 font-bold text-3xl mr-12 ">{title}</div>
-          <div className="flex flex-col justify-between w-full  ">
-            <div className="flex flex-1 w-full  text-base font-light overflow-scroll relative">
+          <div className="w-[35%] mr-12 ">
+            <div className="font-bold text-3xl ">{title}</div>
+            <div className="font-thin pt-2 text-sm">
+              {getEntryStartEndTime({
+                createdAt,
+                finishedAt,
+              }).toLocaleLowerCase()}
+            </div>
+          </div>
+
+          <div className="flex flex-col justify-between w-full">
+            <div className="flex flex-1 w-full font-thin overflow-scroll relative">
               <EditorContent editor={editor} />
               <div className="absolute bottom-0 w-full h-6 bg-gradient-to-t from-white to-transparent" />
             </div>
