@@ -37,6 +37,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
       utils.allEntries.invalidate()
     },
   })
+  const isBlurred = useAppSelector((state) => state.app.isBlurred)
 
   const isEditing = useAppSelector((state) => state.app.editingEntryId === id)
   const editor = useEditor({
@@ -93,7 +94,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
   return (
     <section
       onClick={() => setIsConfirmingDelete(false)}
-      className="flex h-screen w-full items-center snap-center justify-between pl-32 pr-8"
+      className="flex h-screen w-full items-center snap-center justify-between pl-24 pr-8"
     >
       <AnimatedDate
         isVisible={!isEditing}
@@ -109,14 +110,16 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
           width: isEditing ? "100%" : "70%",
           paddingTop: isEditing ? "2rem" : "8rem",
         }}
-        className="pt-32 pb-8 h-full py-8"
+        className="pt-24 pb-8 h-full py-8"
       >
         <div className="flex border-b-4 h-full border-black pl-8 py-8 ">
           <div className="flex flex-col mr-8 w-64 ">
             <div
               onBlur={(e) => onTitleChange(e.target.innerHTML)}
               contentEditable={isEditing}
-              className="font-bold text-3xl outline-none"
+              className={`font-bold text-3xl outline-none ${
+                isBlurred ? "blur-md font-normal" : ""
+              }`}
             >
               {title}
             </div>
@@ -160,7 +163,11 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
               entryFinishedAt={finishedAt}
               editor={editor}
             />
-            <div className="w-full h-full  [&_div:first-child]:h-full [&_div:first-child]:w-full overflow-scroll relative">
+            <div
+              className={`w-full h-full  [&_div:first-child]:h-full [&_div:first-child]:w-full overflow-scroll relative ${
+                isBlurred ? "blur-sm" : ""
+              }`}
+            >
               <EditorContent editor={editor} />
               <div className="absolute bottom-0 w-full h-8 bg-gradient-to-t from-white to-transparent pointer-events-none" />
             </div>

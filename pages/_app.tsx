@@ -30,7 +30,7 @@ const App: AppType = ({ Component, pageProps }: AppProps) => {
 
   return (
     <Provider store={store}>
-      <ReactQueryDevtools />
+      {/* <ReactQueryDevtools /> */}
       <SessionContextProvider
         supabaseClient={supabaseClient}
         initialSession={pageProps.initialSession}
