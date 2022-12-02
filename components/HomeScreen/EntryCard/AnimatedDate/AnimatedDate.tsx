@@ -11,7 +11,7 @@ export const AnimatedDate: React.FC<AnimatedDateProps> = ({
   scrollYProgress,
   date,
 }) => {
-  const y = useTransform(scrollYProgress, [0, 1], [-400, 400])
+  const y = useTransform(scrollYProgress, [0, 1], [-300, 300])
 
   const createdAtDatetime = DateTime.fromISO(date)
 
@@ -23,7 +23,7 @@ export const AnimatedDate: React.FC<AnimatedDateProps> = ({
   return (
     <motion.div
       style={{ y }}
-      className="justify-center items-center flex flex-1"
+      className="justify-center items-center w-full flex"
     >
       <div className="flex items-start">
         <div className="text-xl pt-4 font-light tracking-widest">

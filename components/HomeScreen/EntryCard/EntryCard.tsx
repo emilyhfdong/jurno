@@ -1,8 +1,8 @@
 import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import React, { useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Entry } from "../../types"
-import { useScroll } from "framer-motion"
+import { AnimatePresence, motion, useScroll } from "framer-motion"
 import { AnimatedDate } from "./AnimatedDate/AnimatedDate"
 import { getEntryStartEndTime } from "../utils"
 
@@ -12,6 +12,7 @@ type EntryCardProps = {
 export const EntryCard: React.FC<EntryCardProps> = ({
   entry: { content, createdAt, title, finishedAt },
 }) => {
+  const [isEditing, setIsEditing] = useState(false)
   const editor = useEditor({
     extensions: [StarterKit],
     content,
@@ -20,13 +21,39 @@ export const EntryCard: React.FC<EntryCardProps> = ({
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref })
 
+  useEffect(() => {
+    if (isEditing) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "scroll"
+    }
+  }, [isEditing])
+
   return (
-    <section className="flex h-screen items-center snap-center justify-between pl-32 pr-8">
-      <AnimatedDate date={createdAt} scrollYProgress={scrollYProgress} />
+    <section className="flex h-screen w-full items-center snap-center justify-between pl-32 pr-8">
+      <AnimatePresence>
+        {!isEditing && (
+          <motion.div
+            layout
+            transition={{ type: "tween", ease: "easeInOut" }}
+            animate={{ width: isEditing ? "0%" : "30%" }}
+            initial={{ width: "30%" }}
+            exit={{ width: "0%", overflowX: "hidden" }}
+          >
+            <AnimatedDate date={createdAt} scrollYProgress={scrollYProgress} />
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div ref={ref}>{/* dummy div to calculate scroll position */}</div>
-      <div className="pt-32 pb-8 w-[70%] h-full py-8 ">
+      <motion.div
+        layout
+        transition={{ type: "tween", ease: "easeInOut" }}
+        initial={false}
+        animate={{ width: isEditing ? "100%" : "70%" }}
+        className="pt-32 pb-8 h-full py-8 "
+      >
         <div className="flex border-b-4 h-full border-black px-4 py-8">
-          <div className="w-[30%] mr-10  ">
+          <div className="mr-10 w-64">
             <div className="font-bold text-3xl ">{title}</div>
             <div className="font-thin pt-2 text-sm">
               {getEntryStartEndTime({
@@ -34,8 +61,12 @@ export const EntryCard: React.FC<EntryCardProps> = ({
                 finishedAt,
               }).toLocaleLowerCase()}
             </div>
-            <div className="flex items-center cursor-pointer mt-2">
-              Edit<i className="ri-arrow-right-s-line"></i>
+            <div
+              onClick={() => setIsEditing(!isEditing)}
+              className="flex items-center cursor-pointer mt-2"
+            >
+              {isEditing ? "Done" : "Edit"}
+              <i className="ri-arrow-right-s-line"></i>
             </div>
           </div>
 
@@ -44,7 +75,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({
             <div className="absolute bottom-0 w-full h-6 bg-gradient-to-t from-white to-transparent" />
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }
