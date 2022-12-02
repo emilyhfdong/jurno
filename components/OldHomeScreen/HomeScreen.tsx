@@ -6,7 +6,7 @@ import { Dashboard } from "./Dashboard"
 
 type HomeScreenProps = {}
 
-export const HomeScreen: React.FC<HomeScreenProps> = () => {
+export const OldHomeScreen: React.FC<HomeScreenProps> = () => {
   const { data, isLoading } = trpc.user.useQuery()
 
   if (isLoading) {

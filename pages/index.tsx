@@ -3,7 +3,7 @@ import { GetServerSideProps } from "next"
 
 import React from "react"
 import { AuthSession } from "@supabase/supabase-js"
-import { HomeScreen } from "../components/OldHomeScreen"
+import { HomeScreen } from "../components/HomeScreen"
 
 type HomeProps = {
   initialSession: AuthSession

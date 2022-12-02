@@ -6,9 +6,9 @@ import { Entry } from "../types"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { DateTime } from "luxon"
 
-type NewHomeScreenProps = {}
+type HomeScreenProps = {}
 
-export const NewHomeScreen: React.FC<NewHomeScreenProps> = () => {
+export const HomeScreen: React.FC<HomeScreenProps> = () => {
   const { data } = trpc.allEntries.useQuery()
 
   return (
