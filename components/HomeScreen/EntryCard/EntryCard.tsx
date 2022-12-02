@@ -42,9 +42,9 @@ export const EntryCard: React.FC<EntryCardProps> = ({
         transition={{ type: "tween", ease: "easeInOut" }}
         initial={false}
         animate={{ width: isEditing ? "100%" : "70%" }}
-        className="pt-32 pb-8 h-full py-8 "
+        className="pt-32 pb-8 h-full py-8"
       >
-        <div className="flex border-b-4 h-full border-black px-4 py-8">
+        <div className="flex border-b-4 h-full border-black px-8 py-8">
           <div className="mr-10 w-64">
             <div className="font-bold text-3xl ">{title}</div>
             <div className="font-thin pt-2 text-sm">
