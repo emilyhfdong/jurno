@@ -2,7 +2,7 @@ import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import React, { useEffect, useRef, useState } from "react"
 import { Entry } from "../../types"
-import { AnimatePresence, motion, useScroll } from "framer-motion"
+import { motion, useScroll } from "framer-motion"
 import { AnimatedDate } from "./AnimatedDate/AnimatedDate"
 import { getEntryStartEndTime } from "../utils"
 
@@ -31,19 +31,11 @@ export const EntryCard: React.FC<EntryCardProps> = ({
 
   return (
     <section className="flex h-screen w-full items-center snap-center justify-between pl-32 pr-8">
-      <AnimatePresence>
-        {!isEditing && (
-          <motion.div
-            layout
-            transition={{ type: "tween", ease: "easeInOut" }}
-            animate={{ width: isEditing ? "0%" : "30%" }}
-            initial={{ width: "30%" }}
-            exit={{ width: "0%", overflowX: "hidden" }}
-          >
-            <AnimatedDate date={createdAt} scrollYProgress={scrollYProgress} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <AnimatedDate
+        isVisible={!isEditing}
+        date={createdAt}
+        scrollYProgress={scrollYProgress}
+      />
       <div ref={ref}>{/* dummy div to calculate scroll position */}</div>
       <motion.div
         layout
