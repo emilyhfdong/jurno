@@ -32,7 +32,7 @@ export const AnimatedDate: React.FC<AnimatedDateProps> = ({
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          layout
+          layout="position"
           transition={{ type: "tween", ease: "easeInOut" }}
           animate={{ width: isVisible ? "30%" : "0%" }}
           initial={{ width: "30%" }}

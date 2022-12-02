@@ -45,8 +45,8 @@ html {
 
 .ProseMirror {
   outline: none;
-  flex: 1;
   white-space: pre-wrap;
+  width: 100%;
 }
 
 .ProseMirror p {
