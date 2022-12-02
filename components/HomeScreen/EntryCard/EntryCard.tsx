@@ -25,8 +25,8 @@ export const EntryCard: React.FC<EntryCardProps> = ({
       <AnimatedDate date={createdAt} scrollYProgress={scrollYProgress} />
       <div ref={ref}>{/* dummy div to calculate scroll position */}</div>
       <div className="pt-32 pb-8 w-[70%] h-full py-8 ">
-        <div className="flex border-b-4 h-full border-black p-6">
-          <div className="w-[35%] mr-12 ">
+        <div className="flex border-b-4 h-full border-black px-4 py-8">
+          <div className="w-[30%] mr-10  ">
             <div className="font-bold text-3xl ">{title}</div>
             <div className="font-thin pt-2 text-sm">
               {getEntryStartEndTime({
@@ -34,16 +34,14 @@ export const EntryCard: React.FC<EntryCardProps> = ({
                 finishedAt,
               }).toLocaleLowerCase()}
             </div>
-          </div>
-
-          <div className="flex flex-col justify-between w-full">
-            <div className="flex flex-1 w-full font-thin overflow-scroll relative">
-              <EditorContent editor={editor} />
-              <div className="absolute bottom-0 w-full h-6 bg-gradient-to-t from-white to-transparent" />
-            </div>
-            <div className="font-bold flex items-center cursor-pointer mt-4">
+            <div className="flex items-center cursor-pointer mt-2">
               Edit<i className="ri-arrow-right-s-line"></i>
             </div>
+          </div>
+
+          <div className="flex text-base font-thin flex-1 w-full overflow-scroll relative">
+            <EditorContent editor={editor} />
+            <div className="absolute bottom-0 w-full h-6 bg-gradient-to-t from-white to-transparent" />
           </div>
         </div>
       </div>

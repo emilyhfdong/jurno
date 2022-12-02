@@ -14,6 +14,7 @@ export const AnimatedDate: React.FC<AnimatedDateProps> = ({
   const y = useTransform(scrollYProgress, [0, 1], [-400, 400])
 
   const createdAtDatetime = DateTime.fromISO(date)
+
   const backgroundPositionY = useTransform(
     scrollYProgress,
     [0, 1],
