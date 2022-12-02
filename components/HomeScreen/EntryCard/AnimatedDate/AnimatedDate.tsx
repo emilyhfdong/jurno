@@ -6,6 +6,7 @@ import {
 } from "framer-motion"
 import { DateTime } from "luxon"
 import React from "react"
+import { EDIT_MODE_TRANSITION } from "../utils"
 
 type AnimatedDateProps = {
   date: string
@@ -33,11 +34,11 @@ export const AnimatedDate: React.FC<AnimatedDateProps> = ({
       {isVisible && (
         <motion.div
           layout="position"
-          transition={{ type: "tween", ease: "easeInOut" }}
-          animate={{ width: isVisible ? "30%" : "0%" }}
-          initial={{ width: "30%" }}
+          transition={EDIT_MODE_TRANSITION}
+          animate={{ width: isVisible ? "30%" : "0%", opacity: 1 }}
+          initial={{ opacity: 0, width: "30%" }}
           exit={{ width: "0%", overflowX: "hidden" }}
-          style={{ y }}
+          style={{ y, opacity: 1 }}
           className="justify-center items-center w-full flex"
         >
           <div className="flex items-start">

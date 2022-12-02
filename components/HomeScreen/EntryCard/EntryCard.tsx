@@ -5,8 +5,12 @@ import { Entry } from "../../types"
 import { motion, useScroll } from "framer-motion"
 import { AnimatedDate } from "./AnimatedDate/AnimatedDate"
 import { getEntryStartEndTime } from "../utils"
-import { debounce, getStringifiedEntry } from "./utils"
+import { debounce, EDIT_MODE_TRANSITION, getStringifiedEntry } from "./utils"
 import { trpc } from "../../../utils/trpc"
+import { ToolBar } from "./ToolBar"
+import { useDispatch } from "react-redux"
+import { appActions } from "../../../redux/slices/appSlice"
+import { useAppSelector } from "../../../redux/hooks"
 
 type EntryCardProps = {
   entry: Entry
@@ -18,12 +22,14 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
     createdAt,
     title: initialTitle,
     finishedAt,
+    id,
   } = entry
   const [persistedStringifiedContent, setPersistedStringifiedContent] =
     useState(getStringifiedEntry(entry))
   const [title, setTitle] = useState(initialTitle)
+  const dispatch = useDispatch()
 
-  const [isEditing, setIsEditing] = useState(false)
+  const isEditing = useAppSelector((state) => state.app.editingEntryId === id)
   const editor = useEditor({
     extensions: [StarterKit],
     content: initialContent,
@@ -75,12 +81,15 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
       <div ref={ref}>{/* dummy div to calculate scroll position */}</div>
       <motion.div
         layout="position"
-        transition={{ type: "tween", ease: "easeInOut" }}
+        transition={EDIT_MODE_TRANSITION}
         initial={false}
-        animate={{ width: isEditing ? "100%" : "70%" }}
-        className="pt-32 pb-8 h-full py-8 "
+        animate={{
+          width: isEditing ? "100%" : "70%",
+          paddingTop: isEditing ? "2rem" : "8rem",
+        }}
+        className="pt-32 pb-8 h-full py-8"
       >
-        <div className="flex border-b-4 h-full border-black pl-8 pr-4 py-8 ">
+        <div className="flex border-b-4 h-full border-black pl-8 py-8 ">
           <div className="flex flex-col mr-8 w-64 ">
             <div
               onBlur={(e) => onTitleChange(e.target.innerHTML)}
@@ -96,7 +105,9 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
               }).toLocaleLowerCase()}
             </div>
             <div
-              onClick={() => setIsEditing(!isEditing)}
+              onClick={() =>
+                dispatch(appActions.setEditingEntryId(isEditing ? null : id))
+              }
               className="flex items-center cursor-pointer mt-2"
             >
               {isEditing ? "Done" : "Edit"}
@@ -104,16 +115,23 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
             </div>
           </div>
 
-          <div className="flex text-base font-thin flex-1 w-full [&_div:first-child]:h-full [&_div:first-child]:w-full overflow-scroll relative">
-            <EditorContent editor={editor} />
-            {isEditing && (
+          <div className="flex flex-col text-base font-thin flex-1 w-full">
+            <ToolBar
+              entryId={id}
+              entryFinishedAt={finishedAt}
+              editor={editor}
+            />
+            <div className="w-full h-full  [&_div:first-child]:h-full [&_div:first-child]:w-full overflow-scroll relative">
+              <EditorContent editor={editor} />
+              <div className="absolute bottom-0 w-full h-8 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+            </div>
+            {/* {isEditing && (
               <i
                 className={`ri-check-line ${
                   isSaved ? "" : "text-transparent"
                 } text-grey absolute top-0 right-0`}
               ></i>
-            )}
-            <div className="absolute bottom-0 w-full h-6 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+            )} */}
           </div>
         </div>
       </motion.div>
