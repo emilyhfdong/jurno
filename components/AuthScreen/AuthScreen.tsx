@@ -1,11 +1,19 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import { Auth, ThemeMinimal } from "@supabase/auth-ui-react"
-import React from "react"
+import React, { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { appActions } from "../../redux/slices/appSlice"
 
 type AuthScreenProps = {}
 
 export const AuthScreen: React.FC<AuthScreenProps> = () => {
   const client = useSupabaseClient()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(appActions.setRequiresPin(false))
+  }, [dispatch])
+
   return (
     <div className="flex flex-1 justify-center items-center font-sans">
       <div className="flex flex-col p4 w-[40vw]">
