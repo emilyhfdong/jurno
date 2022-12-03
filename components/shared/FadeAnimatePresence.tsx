@@ -4,11 +4,13 @@ import React from "react"
 type FadeAnimatePresenceProps = {
   isVisible: boolean
   children: React.ReactNode
+  delay?: number
 }
 
 export const FadeAnimatePresence: React.FC<FadeAnimatePresenceProps> = ({
   isVisible,
   children,
+  delay,
 }) => {
   return (
     <AnimatePresence>
@@ -17,6 +19,7 @@ export const FadeAnimatePresence: React.FC<FadeAnimatePresenceProps> = ({
           initial="closed"
           animate="open"
           variants={{ open: { opacity: 1 }, closed: { opacity: 0 } }}
+          transition={{ delay }}
         >
           {children}
         </motion.div>

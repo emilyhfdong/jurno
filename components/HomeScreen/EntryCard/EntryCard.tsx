@@ -11,6 +11,7 @@ import { ToolBar } from "./ToolBar"
 import { useDispatch } from "react-redux"
 import { appActions } from "../../../redux/slices/appSlice"
 import { useAppSelector } from "../../../redux/hooks"
+import { FadeAnimatePresence } from "../../shared"
 
 type EntryCardProps = {
   entry: Entry
@@ -177,12 +178,16 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
             />
             {!requiresPin && (
               <div
-                className={`w-full h-full  [&_div:first-child]:h-full [&_div:first-child]:w-full overflow-scroll relative ${
+                className={`w-full h-full overflow-scroll relative ${
                   isBlurred ? "blur-sm" : ""
                 }`}
               >
-                <EditorContent editor={editor} />
-                <div className="absolute bottom-0 w-full h-8 bg-gradient-to-t from-white pointer-events-none" />
+                <div className="w-full h-full [&_div:first-child]:h-full [&_div:first-child]:w-full">
+                  <EditorContent editor={editor} />
+                </div>
+                <FadeAnimatePresence isVisible={!requiresPin} delay={0.2}>
+                  <div className="absolute bottom-0 w-full h-10 bg-gradient-to-t from-white pointer-events-none" />
+                </FadeAnimatePresence>
               </div>
             )}
           </div>
