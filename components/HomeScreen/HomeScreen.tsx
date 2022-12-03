@@ -7,8 +7,6 @@ import { trpc } from "../../utils/trpc"
 import { useTheme } from "../shared"
 import { CheckPin } from "./CheckPin"
 import { EntryCard } from "./EntryCard"
-import { NavBar } from "./NavBar"
-import { SideBar } from "./SideBar"
 
 export const HomeScreen: React.FC = () => {
   const isBlurred = useAppSelector((state) => state.app.isBlurred)
@@ -56,8 +54,6 @@ export const HomeScreen: React.FC = () => {
       animate={{ backgroundColor: theme.background }}
       className="min-h-screen w-screen"
     >
-      <SideBar />
-      <NavBar />
       <CheckPin />
       <motion.div animate={{ opacity: requiresPin ? 0 : 1 }}>
         {data?.entries.map((entry) => (

@@ -9,7 +9,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = () => {
   return (
     <div className="flex flex-1 justify-center items-center font-sans">
       <div className="flex flex-col p4 w-[40vw]">
-        <p className="text-4xl mb-6">Welcome back</p>
+        <p className="text-3xl mb-6 font-bold">Welcome back</p>
         <Auth
           supabaseClient={client}
           appearance={{

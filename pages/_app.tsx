@@ -5,13 +5,14 @@ import { ReactNode, useState } from "react"
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
 
 import React from "react"
-import { Header } from "../components/shared"
 import Head from "next/head"
 import type { AppType } from "next/app"
 import { trpc } from "../utils/trpc"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { Provider } from "react-redux"
 import { store } from "../redux/store"
+import { NavBar } from "../components/NavBar"
+import { SideBar } from "../components/SideBar"
 
 const BasePage: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
@@ -19,7 +20,8 @@ const BasePage: React.FC<{ children: ReactNode }> = ({ children }) => {
       <Head>
         <title>jurno</title>
       </Head>
-      {/* <Header /> */}
+      <NavBar />
+      <SideBar />
       {children}
     </div>
   )

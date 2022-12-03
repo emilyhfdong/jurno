@@ -1,8 +1,8 @@
 import { motion } from "framer-motion"
 import React from "react"
-import { useAppSelector } from "../../../redux/hooks"
-import { useTheme } from "../../shared"
-import { EDIT_MODE_TRANSITION } from "../EntryCard/utils"
+import { useAppSelector } from "../../redux/hooks"
+import { EDIT_MODE_TRANSITION } from "../HomeScreen/EntryCard/utils"
+import { useTheme } from "../shared"
 
 type NavBarProps = {}
 
