@@ -43,7 +43,7 @@ export const AnimatedDate: React.FC<AnimatedDateProps> = ({
         >
           <div className="flex items-start">
             <div className="text-xl pt-4 font-thin tracking-widest">
-              {createdAtDatetime.month}/
+              {createdAtDatetime.toFormat("MM")}/
             </div>
             <motion.div
               style={{
@@ -57,7 +57,7 @@ export const AnimatedDate: React.FC<AnimatedDateProps> = ({
               }}
               className="text-[13rem] leading-none font-bold"
             >
-              {createdAtDatetime.day}
+              {createdAtDatetime.toFormat("dd")}
             </motion.div>
           </div>{" "}
         </motion.div>
