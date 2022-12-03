@@ -1,6 +1,4 @@
 import { DateTime } from "luxon"
-import resolveConfig from "tailwindcss/resolveConfig"
-import _tailwindConfig from "../../tailwind.config.js"
 
 export const getEntryStartEndTime = ({
   finishedAt,
@@ -15,5 +13,3 @@ export const getEntryStartEndTime = ({
     finishedAtDatetime ? ` - ${finishedAtDatetime.toFormat("h:mma")}` : ""
   }`
 }
-
-export const tailwindConfig = resolveConfig(_tailwindConfig) as any

@@ -1,6 +1,6 @@
 import { motion, useAnimation } from "framer-motion"
-import React, { useEffect, useState } from "react"
-import { tailwindConfig } from "../HomeScreen/utils"
+import React, { useEffect } from "react"
+import { useTheme } from "."
 
 type PinInputProps = {
   pin: string
@@ -16,6 +16,7 @@ export const PinInput: React.FC<PinInputProps> = ({
   hasError,
 }) => {
   const pinRowControls = useAnimation()
+  const theme = useTheme()
 
   useEffect(() => {
     const onKeyDown = async (ev: KeyboardEvent) => {
@@ -35,7 +36,6 @@ export const PinInput: React.FC<PinInputProps> = ({
     return () => window.removeEventListener("keydown", onKeyDown)
   }, [setPin, pin, pinRowControls, onEnter])
 
-  const { white, grey } = tailwindConfig.theme.colors
   return (
     <motion.div
       className="flex gap-5  text-center font-bold"
@@ -54,7 +54,7 @@ export const PinInput: React.FC<PinInputProps> = ({
           <motion.div
             key={idx}
             animate={{
-              borderColor: isFilled ? white : grey,
+              borderColor: isFilled ? theme.white : theme.grey,
             }}
             transition={{ duration: 0.1 }}
             className="flex justify-center items-center border border-grey p-4 rounded-md"
