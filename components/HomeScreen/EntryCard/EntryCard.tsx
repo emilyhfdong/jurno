@@ -46,7 +46,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
     content: initialContent,
     editable: isEditing,
     onUpdate: ({ editor }) => {
-      debounce(() => mutate({ content: editor.getJSON(), id: entry.id }))
+      debounce(() => mutate({ content: editor.getJSON(), id }))
     },
   })
 
@@ -67,9 +67,9 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
   const onTitleChange = useCallback(
     (newTitle: string) => {
       setTitle(newTitle)
-      debounce(() => mutate({ title: newTitle, id: entry.id }))
+      debounce(() => mutate({ title: newTitle, id }))
     },
-    [setTitle, entry, mutate]
+    [setTitle, id, mutate]
   )
 
   useEffect(() => {
@@ -87,6 +87,13 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
     } else {
       setIsConfirmingDelete(true)
     }
+  }
+
+  const onEditToggle = () => {
+    if (isEditing) {
+      mutate({ id, title: title || "", content: editor?.getJSON() })
+    }
+    dispatch(appActions.setEditingEntryId(isEditing ? null : id))
   }
 
   return (
@@ -123,17 +130,22 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
                 {title}
               </div>
             )}
-            <div className="font-thin pt-2 text-sm">
+            <div className="flex items-center font-thin pt-2 text-sm">
               {getEntryStartEndTime({
                 createdAt,
                 finishedAt,
               }).toLocaleLowerCase()}
+              {isEditing && (
+                <i
+                  className={`ri-check-line ${
+                    isSaved ? "" : "text-transparent"
+                  } text-grey ml-1`}
+                ></i>
+              )}
             </div>
             <div className="flex ">
               <div
-                onClick={() =>
-                  dispatch(appActions.setEditingEntryId(isEditing ? null : id))
-                }
+                onClick={onEditToggle}
                 className="flex items-center cursor-pointer mt-2 mr-4"
               >
                 {isEditing ? "Done" : "Edit"}
@@ -173,13 +185,6 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
                 <div className="absolute bottom-0 w-full h-8 bg-gradient-to-t from-white pointer-events-none" />
               </div>
             )}
-            {/* {isEditing && (
-              <i
-                className={`ri-check-line ${
-                  isSaved ? "" : "text-transparent"
-                } text-grey absolute top-0 right-0`}
-              ></i>
-            )} */}
           </div>
         </div>
       </motion.div>
