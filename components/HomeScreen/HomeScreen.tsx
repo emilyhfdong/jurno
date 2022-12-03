@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useAppSelector } from "../../redux/hooks"
 import { appActions } from "../../redux/slices/appSlice"
@@ -13,6 +13,7 @@ import { SideBar } from "./SideBar"
 export const HomeScreen: React.FC = () => {
   const isBlurred = useAppSelector((state) => state.app.isBlurred)
   const requiresPin = useAppSelector((state) => state.app.requiresPin)
+  const [entriesLength, setEntriesLength] = useState<number>()
 
   const { data } = trpc.allEntries.useQuery()
   const dispatch = useDispatch()
@@ -35,6 +36,18 @@ export const HomeScreen: React.FC = () => {
     window.addEventListener("blur", onBlur)
     return () => window.removeEventListener("blur", onBlur)
   }, [dispatch])
+
+  useEffect(() => {
+    if (data) {
+      const newLength = data.entries.length
+      if (entriesLength !== undefined && newLength < entriesLength) {
+        // reset editing state and scroll when entry is deleted
+        dispatch(appActions.setEditingEntryId(null))
+        window.scrollBy(0, 1)
+      }
+      setEntriesLength(newLength)
+    }
+  }, [data, entriesLength, dispatch])
 
   return (
     <motion.div

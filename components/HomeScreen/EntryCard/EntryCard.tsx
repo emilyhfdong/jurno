@@ -75,10 +75,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
   useEffect(() => {
     editor?.setOptions({ editable: isEditing })
     if (isEditing) {
-      document.body.style.overflow = "hidden"
       editor?.commands.focus("end")
-    } else {
-      document.body.style.overflow = "scroll"
     }
   }, [isEditing, editor])
 

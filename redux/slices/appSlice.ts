@@ -34,10 +34,13 @@ export const appSlice = createSlice({
       ...state,
       isBlurred: action.payload,
     }),
-    setEditingEntryId: (state, action: PayloadAction<string | null>) => ({
-      ...state,
-      editingEntryId: action.payload,
-    }),
+    setEditingEntryId: (state, action: PayloadAction<string | null>) => {
+      document.body.style.overflow = action.payload ? "hidden" : "scroll"
+      return {
+        ...state,
+        editingEntryId: action.payload,
+      }
+    },
   },
 })
 
