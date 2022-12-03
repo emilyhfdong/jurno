@@ -1,6 +1,6 @@
 import { motion, useAnimation } from "framer-motion"
 import React, { useEffect } from "react"
-import { useTheme } from "."
+import { useTheme } from "../../theme"
 
 type PinInputProps = {
   pin: string

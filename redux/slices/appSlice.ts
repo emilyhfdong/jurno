@@ -9,7 +9,8 @@ interface AppState {
   editingEntryId: string | null
 }
 
-const IS_DEVELOPMENT = process.env.NODE_ENV === "development"
+// const IS_DEVELOPMENT = process.env.NODE_ENV === "development"
+const IS_DEVELOPMENT = false
 
 const initialState: AppState = {
   activeEntry: null,

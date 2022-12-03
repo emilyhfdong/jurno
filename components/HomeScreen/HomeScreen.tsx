@@ -7,11 +7,13 @@ import { trpc } from "../../utils/trpc"
 import { useTheme } from "../shared"
 import { CheckPin } from "./CheckPin"
 import { EntryCard } from "./EntryCard"
+import { SetPin } from "./SetPin"
 
 export const HomeScreen: React.FC = () => {
   const isBlurred = useAppSelector((state) => state.app.isBlurred)
   const requiresPin = useAppSelector((state) => state.app.requiresPin)
   const [entriesLength, setEntriesLength] = useState<number>()
+  const { data: userData } = trpc.user.useQuery()
 
   const { data } = trpc.allEntries.useQuery()
   const dispatch = useDispatch()
@@ -47,6 +49,10 @@ export const HomeScreen: React.FC = () => {
     }
   }, [data, entriesLength, dispatch])
 
+  if (!userData) {
+    return <></>
+  }
+
   return (
     <motion.div
       style={{ backgroundColor: theme.background }}
@@ -55,6 +61,7 @@ export const HomeScreen: React.FC = () => {
       className="min-h-screen w-screen"
     >
       <CheckPin />
+      <SetPin />
       <motion.div animate={{ opacity: requiresPin ? 0 : 1 }}>
         {data?.entries.map((entry) => (
           <EntryCard key={entry.id} entry={entry} />
