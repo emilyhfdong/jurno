@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import React, { useRef } from "react"
 import { useAppSelector } from "../../../../redux/hooks"
 import { trpc } from "../../../../utils/trpc"
+import { EDIT_MODE_TRANSITION } from "../utils"
 
 type ToolBarProps = {
   editor: Editor | null
@@ -34,7 +35,7 @@ export const ToolBar: React.FC<ToolBarProps> = ({
             open: { height: "auto", opacity: 1 },
             collapsed: { height: 0, opacity: 0 },
           }}
-          transition={{ delay: 0.3 }}
+          transition={EDIT_MODE_TRANSITION}
         >
           <div className="flex items-center justify-between mb-5 p-2 border-b border-black text-lg mt-[-1rem]">
             <div className="flex items-center">

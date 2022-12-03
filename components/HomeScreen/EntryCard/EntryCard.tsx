@@ -95,7 +95,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
   return (
     <section
       onClick={() => setIsConfirmingDelete(false)}
-      className="flex h-screen w-full items-center snap-center justify-between pl-24 pr-8"
+      className={`flex h-screen w-full items-center snap-center justify-between pl-24 pr-8`}
     >
       <AnimatedDate
         isVisible={!isEditing}
@@ -109,11 +109,11 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
         initial={false}
         animate={{
           width: isEditing ? "100%" : "70%",
-          paddingTop: isEditing ? "2rem" : "8rem",
+          paddingTop: isEditing ? "2rem" : "6rem",
         }}
-        className="pt-24 pb-8 h-full py-8"
+        className="pt-24 pb-8 h-full py-8 "
       >
-        <div className="flex border-b-4 h-full border-black pl-8 py-8 ">
+        <div className="flex border-b-4 h-full border-black pl-8 py-8">
           <div className="flex flex-col mr-8 w-64 ">
             {!requiresPin && (
               <div
@@ -173,7 +173,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
                 }`}
               >
                 <EditorContent editor={editor} />
-                <div className="absolute bottom-0 w-full h-8 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+                <div className="absolute bottom-0 w-full h-8 bg-gradient-to-t from-white pointer-events-none" />
               </div>
             )}
             {/* {isEditing && (
