@@ -1,18 +1,19 @@
 import { motion, useAnimation } from "framer-motion"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
+import { tailwindConfig } from "../HomeScreen/utils"
 
 type PinInputProps = {
-  title: string
   pin: string
-  onEnter: () => Promise<{ hasError: boolean }>
+  onEnter: () => void
   setPin: (pin: string) => void
+  hasError: boolean
 }
 
 export const PinInput: React.FC<PinInputProps> = ({
-  title,
   pin,
   onEnter,
   setPin,
+  hasError,
 }) => {
   const pinRowControls = useAnimation()
 
@@ -22,47 +23,56 @@ export const PinInput: React.FC<PinInputProps> = ({
         setPin(pin.slice(0, -1))
       }
       const isNumber = /^\d+$/.test(ev.key)
-      if (isNumber) {
+      if (isNumber && pin.length < 4) {
         setPin(`${pin}${ev.key}`)
       }
 
-      if (ev.key === "Enter") {
-        const { hasError } = await onEnter()
-        if (hasError) {
-          pinRowControls.start({
-            x: [0, -1, 2, -4, 4, -4, 2, -1, 0],
-            transition: { duration: 0.5 },
-          })
-        }
+      if (ev.key === "Enter" && pin.length === 4) {
+        onEnter()
       }
     }
     window.addEventListener("keydown", onKeyDown)
     return () => window.removeEventListener("keydown", onKeyDown)
   }, [setPin, pin, pinRowControls, onEnter])
 
+  const { white, grey } = tailwindConfig.theme.colors
   return (
-    <div className="flex flex-col p4 w-[40vw]">
-      <p className={`text-4xl mb-16 text-center font-bold`}>{title}</p>
-      <motion.div
-        animate={pinRowControls}
-        className="flex items-center justify-center gap-5  text-center font-bold"
-      >
-        {new Array(4).fill(0).map((_, idx) => {
-          const isFilled = pin[idx]
-          return (
+    <motion.div
+      className="flex gap-5  text-center font-bold"
+      variants={{
+        shake: {
+          x: [0, -2, 4, -8, 8, -8, 4, -2, 0],
+          transition: { duration: 0.6 },
+        },
+      }}
+      initial="initial"
+      animate={hasError ? "shake" : undefined}
+    >
+      {new Array(4).fill(0).map((_, idx) => {
+        const isFilled = pin[idx]
+        return (
+          <motion.div
+            key={idx}
+            animate={{
+              borderColor: isFilled ? white : grey,
+            }}
+            transition={{ duration: 0.1 }}
+            className="flex justify-center items-center border border-grey p-4 rounded-md"
+          >
             <motion.i
               animate={
                 isFilled
-                  ? { transform: ["scale(1)", "scale(1.3)", "scale(1)"] }
+                  ? { transform: ["scale(1)", "scale(1.4)", "scale(1)"] }
                   : undefined
               }
               transition={{ duration: 0.2 }}
-              key={idx}
-              className={`ri-asterisk text-2xl ${isFilled ? "" : "opacity-30"}`}
+              className={`ri-asterisk text-2xl block  ${
+                isFilled ? "" : "opacity-30"
+              }`}
             />
-          )
-        })}
-      </motion.div>
-    </div>
+          </motion.div>
+        )
+      })}
+    </motion.div>
   )
 }

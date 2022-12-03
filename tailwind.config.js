@@ -10,9 +10,9 @@ module.exports = {
         serif: ["DM Serif Text", "serif"],
       },
       colors: {
-        black: "#1D1D1D",
+        black: "#171717",
         white: "#E8E8E8",
-        grey: "#9F9C94",
+        grey: "#373737",
         red: "#D83A17",
         blue: "blue",
       },
