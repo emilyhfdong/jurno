@@ -50,7 +50,7 @@ export const HomeScreen: React.FC = () => {
       animate={{
         backgroundColor: requiresPin ? black : white,
       }}
-      className="h-screen w-screen"
+      className="min-h-screen w-screen"
     >
       <motion.div
         animate={{
