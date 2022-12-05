@@ -10,17 +10,17 @@ export const getEntryStartEndTime = ({
   const createdAtDatetime = DateTime.fromISO(createdAt)
   const finishedAtDatetime = finishedAt ? DateTime.fromISO(finishedAt) : null
 
-  const durationMinutes = Math.floor(
+  const durationMinutes = Math.ceil(
     finishedAtDatetime?.diff(createdAtDatetime).as("minutes") || 0
   )
 
   const formattedDuration = durationMinutes
     ? durationMinutes < 60
       ? `${durationMinutes}m`
-      : `${Math.floor(durationMinutes / 60)}h ${Math.floor(
+      : `${Math.ceil(durationMinutes / 60)}h ${Math.ceil(
           durationMinutes % 60
         )}m`
-    : ""
+    : "0m"
 
   return `${createdAtDatetime.toFormat("h:mma")}${
     finishedAtDatetime
