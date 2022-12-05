@@ -19,7 +19,7 @@ export const NavBar: React.FC<NavBarProps> = () => {
         borderBottomWidth: isEditing ? 0 : 1,
         borderColor: requiresPin ? thene.grey : thene.content,
       }}
-      className={`fixed border h-16 border-grey top-8 left-8 right-8 z-10`}
+      className={`hidden md:flex fixed border h-16 border-grey top-8 left-8 right-8 z-10`}
     ></motion.div>
   )
 }

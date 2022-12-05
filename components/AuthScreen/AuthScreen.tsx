@@ -16,7 +16,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = () => {
 
   return (
     <div className="flex flex-1 justify-center items-center font-sans">
-      <div className="flex flex-col p4 w-[40vw]">
+      <div className="flex flex-col p4 w-[90vw] md:w-[60vw] lg:w-[40vw] xl-[50vw]">
         <p className="text-3xl mb-6 font-bold">Welcome back</p>
         <Auth
           supabaseClient={client}
@@ -30,7 +30,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = () => {
                 borderLeft: "none",
                 borderRight: "none",
                 padding: "8px",
-                width: "40vw",
+                width: "100%",
                 marginBottom: "16px",
               },
               label: { display: "none" },
