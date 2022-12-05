@@ -42,7 +42,7 @@ export const AnimatedDate: React.FC<AnimatedDateProps> = ({
           className="justify-center items-center w-full flex"
         >
           <div className="flex items-start">
-            <div className="text-xl pt-4 font-thin tracking-widest">
+            <div className="text-xl pt-4 tracking-widest">
               {createdAtDatetime.toFormat("MM")}/
             </div>
             <motion.div

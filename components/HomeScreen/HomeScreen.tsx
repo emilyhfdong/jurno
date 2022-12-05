@@ -21,7 +21,8 @@ export const HomeScreen: React.FC = () => {
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.code === "KeyB") {
+      if ((event.ctrlKey || event.metaKey) && event.code === "KeyH") {
+        event.preventDefault()
         dispatch(appActions.setIsBlurred(!isBlurred))
       }
     }
