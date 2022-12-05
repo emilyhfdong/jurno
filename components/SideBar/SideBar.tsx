@@ -13,6 +13,7 @@ type SideBarProps = {}
 
 export const SideBar: React.FC<SideBarProps> = () => {
   const isBlurred = useAppSelector((state) => state.app.isBlurred)
+  const requiresPin = useAppSelector((state) => state.app.requiresPin)
   const session = useSession()
   const client = useSupabaseClient()
   const router = useRouter()
@@ -35,18 +36,24 @@ export const SideBar: React.FC<SideBarProps> = () => {
     >
       {!!session && (
         <>
-          <i
-            onClick={() => !isLoading && mutate({ title: getDefaultTitle() })}
-            className={`${
-              isLoading ? "ri-loader-line animate-spin-slow" : "ri-add-line"
-            } mb-2 cursor-pointer`}
-          ></i>
-          <i
-            onClick={() => dispatch(appActions.setIsBlurred(!isBlurred))}
-            className={`ri-eye${
-              isBlurred ? "-off" : ""
-            }-line mb-2 cursor-pointer`}
-          ></i>
+          {!requiresPin && (
+            <>
+              <i
+                onClick={() =>
+                  !isLoading && mutate({ title: getDefaultTitle() })
+                }
+                className={`${
+                  isLoading ? "ri-loader-line animate-spin-slow" : "ri-add-line"
+                } mb-2 cursor-pointer`}
+              ></i>
+              <i
+                onClick={() => dispatch(appActions.setIsBlurred(!isBlurred))}
+                className={`ri-eye${
+                  isBlurred ? "-off" : ""
+                }-line mb-2 cursor-pointer`}
+              ></i>
+            </>
+          )}
           <i
             className="ri-logout-box-line cursor-pointer"
             onClick={async () => {
