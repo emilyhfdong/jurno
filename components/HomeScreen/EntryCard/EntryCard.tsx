@@ -139,8 +139,8 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
               {isEditing && (
                 <i
                   className={`ri-check-line ${
-                    isSaved ? "" : "text-transparent"
-                  } text-grey ml-1`}
+                    isSaved ? "text-grey" : "text-transparent"
+                  }  ml-1`}
                 ></i>
               )}
             </div>
