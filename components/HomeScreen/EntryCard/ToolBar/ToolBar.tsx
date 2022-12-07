@@ -37,7 +37,7 @@ export const ToolBar: React.FC<ToolBarProps> = ({
           }}
           transition={EDIT_MODE_TRANSITION}
         >
-          <div className="flex items-center justify-between mb-5 p-2 border-b border-black text-lg mt-[-1rem]">
+          <div className="flex items-center justify-between mb-5 p-2 border-b border-black text-lg md:mt-[-1.5rem] max-sm:absolute max-sm:top-4 max-sm:left-12 max-sm:right-4">
             <div className="flex items-center">
               <ToolbarButton
                 onClick={() => editor?.chain().focus().toggleBold().run()}

@@ -11,7 +11,7 @@ import { ToolBar } from "./ToolBar"
 import { useDispatch } from "react-redux"
 import { appActions } from "../../../redux/slices/appSlice"
 import { useAppSelector } from "../../../redux/hooks"
-import { FadeAnimatePresence } from "../../shared"
+import { BREAKPOINTS, FadeAnimatePresence, useScreenWidth } from "../../shared"
 
 type EntryCardProps = {
   entry: Entry
@@ -33,6 +33,9 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
   const isBlurred = useAppSelector((state) => state.app.isBlurred)
   const isEditing = useAppSelector((state) => state.app.editingEntryId === id)
   const requiresPin = useAppSelector((state) => state.app.requiresPin)
+
+  const screenWidth = useScreenWidth()
+  const isMobile = screenWidth && screenWidth <= BREAKPOINTS.md
 
   const utils = trpc.useContext()
   const dispatch = useDispatch()
@@ -76,7 +79,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
   useEffect(() => {
     editor?.setOptions({ editable: isEditing })
     if (isEditing) {
-      editor?.commands.focus("end")
+      editor?.commands.focus()
     }
   }, [isEditing, editor])
 
@@ -100,7 +103,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
   return (
     <section
       onClick={() => setIsConfirmingDelete(false)}
-      className={`flex h-screen w-full items-center snap-center justify-between pl-24 pr-8`}
+      className={`flex relative flex-col md:flex-row h-screen w-full md:items-center snap-start md:snap-center md:justify-between pt-16 md:pt-0 pl-16 pr-4 md:pl-24 md:pr-8 overflow-hidden pb-4 md:pb-0`}
     >
       <AnimatedDate
         isVisible={!isEditing}
@@ -113,25 +116,24 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
         transition={EDIT_MODE_TRANSITION}
         initial={false}
         animate={{
-          width: isEditing ? "100%" : "70%",
-          paddingTop: isEditing ? "2rem" : "6rem",
+          paddingTop: isMobile ? "0rem" : isEditing ? "2rem" : "6rem",
         }}
-        className="pt-24 pb-8 h-full py-8 "
+        className="flex-1 h-full md:py-8 overflow-hidden"
       >
-        <div className="flex border-b-4 h-full border-black pl-8 py-8">
-          <div className="flex flex-col mr-8 w-64 ">
+        <div className="flex overflow-hidden h-full flex-col lg:flex-row md:border-b-4 border-black pl-0 md:pl-8 py-2 md:py-8">
+          <div className="flex flex-col shrink-0 lg:mr-8 w-60">
             {!requiresPin && (
               <div
                 onBlur={(e) => onTitleChange(e.target.innerHTML)}
                 contentEditable={isEditing}
-                className={`font-bold text-3xl outline-none ${
+                className={`font-bold text-xl md:text-3xl outline-none ${
                   isBlurred ? "blur-md font-normal" : ""
                 }`}
               >
                 {title}
               </div>
             )}
-            <div className="flex items-center font-thin pt-2 text-sm">
+            <div className="flex items-center font-thin mt-1 md:mt-2 text-sm">
               {getEntryStartEndTime({
                 createdAt,
                 finishedAt,
@@ -144,17 +146,17 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
                 ></i>
               )}
             </div>
-            <div className="flex ">
+            <div className="flex mt-1 md:mt-2 ">
               <div
                 onClick={onEditToggle}
-                className="flex items-center cursor-pointer mt-2 mr-4"
+                className="flex items-center cursor-pointer mr-4"
               >
                 {isEditing ? "Done" : "Edit"}
                 <i className="ri-arrow-right-s-line"></i>
               </div>
               <div
                 onClick={onDelete}
-                className={`flex items-center cursor-pointer mt-2 ${
+                className={`flex items-center cursor-pointer ${
                   isConfirmingDelete ? "text-red" : ""
                 }`}
               >
@@ -169,27 +171,28 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
               </div>
             </div>
           </div>
-
-          <div className="flex flex-col text-base font-thin flex-1 w-full">
-            <ToolBar
-              entryId={id}
-              entryFinishedAt={finishedAt}
-              editor={editor}
-            />
-            {!requiresPin && (
-              <div
-                className={`w-full h-full overflow-scroll relative ${
-                  isBlurred ? "blur-sm" : ""
-                }`}
-              >
-                <div className="w-full h-full [&_div:first-child]:h-full [&_div:first-child]:w-full">
-                  <EditorContent editor={editor} />
+          <div className="pt-4 md:pt-0 h-full max-sm:overflow-hidden">
+            <div className="h-full max-sm:overflow-hidden text-base font-thin flex-1 w-full ">
+              <ToolBar
+                entryId={id}
+                entryFinishedAt={finishedAt}
+                editor={editor}
+              />
+              {!requiresPin && (
+                <div
+                  className={`w-full h-full overflow-scroll ${
+                    isBlurred ? "blur-sm" : ""
+                  }`}
+                >
+                  <div className="w-full md:h-full md:[&_div:first-child]:h-full [&_div:first-child]:w-full relative">
+                    <EditorContent editor={editor} />
+                  </div>
+                  <FadeAnimatePresence isVisible={!requiresPin} delay={0.2}>
+                    <div className="absolute bottom-[-1rem] w-full h-10 bg-gradient-to-t from-white pointer-events-none" />
+                  </FadeAnimatePresence>
                 </div>
-                <FadeAnimatePresence isVisible={!requiresPin} delay={0.2}>
-                  <div className="absolute bottom-0 w-full h-10 bg-gradient-to-t from-white pointer-events-none" />
-                </FadeAnimatePresence>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </motion.div>

@@ -32,7 +32,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
   return (
     <motion.div
       animate={{ borderColor: theme.border, color: theme.content }}
-      className="hidden md:flex fixed border border-grey top-8 left-8 w-16 bottom-8  flex-col items-center justify-end p-6 text-base z-10"
+      className="flex fixed border border-grey top-4 md:top-8 left-4 md:left-8 w-8 md:w-16 bottom-4 md:bottom-8 flex-col items-center justify-end text-base z-10 py-2 md:py-6"
     >
       {!!session && (
         <>

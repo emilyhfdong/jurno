@@ -5,7 +5,8 @@ import {
   useTransform,
 } from "framer-motion"
 import { DateTime } from "luxon"
-import React from "react"
+import React, { useEffect, useState } from "react"
+import { BREAKPOINTS, useScreenWidth } from "../../../shared"
 import { EDIT_MODE_TRANSITION } from "../utils"
 
 type AnimatedDateProps = {
@@ -14,20 +15,47 @@ type AnimatedDateProps = {
   isVisible: boolean
 }
 
+const getFontSize = (screenWidth: number | undefined) => {
+  if (!screenWidth) {
+    return 13
+  }
+  if (screenWidth < BREAKPOINTS.md) {
+    return 5
+  }
+  if (screenWidth < BREAKPOINTS.lg) {
+    return 10
+  }
+  return 13
+}
+
 export const AnimatedDate: React.FC<AnimatedDateProps> = ({
   scrollYProgress,
   date,
   isVisible,
 }) => {
+  const [hasCorrectedPosition, setHasCorrectedPosition] = useState(false)
+  const screenWidth = useScreenWidth()
+
+  const isMobile = screenWidth && screenWidth <= BREAKPOINTS.md
+  const fontSizeRem = getFontSize(screenWidth)
+
   const y = useTransform(scrollYProgress, [0, 1], [-300, 300])
 
   const createdAtDatetime = DateTime.fromISO(date)
 
   const backgroundPositionY = useTransform(
     scrollYProgress,
-    [0, 1],
-    ["26rem", "-26rem"]
+    isMobile ? [-0.5, 1] : [0, 1],
+    [`${fontSizeRem * 2}rem`, `-${fontSizeRem * 2}rem`]
   )
+
+  useEffect(() => {
+    if (!hasCorrectedPosition && screenWidth) {
+      window.scrollBy(0, 0.1)
+      window.scrollTo(0, 0)
+      setHasCorrectedPosition(true)
+    }
+  }, [screenWidth, hasCorrectedPosition])
 
   return (
     <AnimatePresence>
@@ -35,11 +63,20 @@ export const AnimatedDate: React.FC<AnimatedDateProps> = ({
         <motion.div
           layout="position"
           transition={EDIT_MODE_TRANSITION}
-          animate={{ width: isVisible ? "30%" : "0%", opacity: 1 }}
-          initial={{ opacity: 0, width: "30%" }}
-          exit={{ width: "0%", overflowX: "hidden" }}
-          style={{ y, opacity: 1 }}
-          className="justify-center items-center w-full flex"
+          animate={{
+            ...(isMobile
+              ? { height: isVisible ? "auto" : "0rem" }
+              : { width: isVisible ? `${fontSizeRem * 1.8}rem` : "0rem" }),
+            opacity: 1,
+          }}
+          initial={{ opacity: 0, width: `${fontSizeRem * 1.8}rem` }}
+          exit={{
+            width: "0%",
+            overflowX: "hidden",
+            height: isMobile ? 0 : "auto",
+          }}
+          style={{ y: isMobile ? undefined : y, opacity: 1 }}
+          className="md:justify-center items-center w-full flex"
         >
           <div className="flex items-start">
             <div className="text-xl pt-4 tracking-widest">
@@ -49,13 +86,14 @@ export const AnimatedDate: React.FC<AnimatedDateProps> = ({
               style={{
                 WebkitTextFillColor: "transparent",
                 backgroundImage: "linear-gradient(black, black)",
-                backgroundSize: "100% 13rem",
+                backgroundSize: `100% ${fontSizeRem}rem`,
                 WebkitBackgroundClip: "text",
                 backgroundPositionY,
                 backgroundRepeat: "no-repeat",
                 WebkitTextStroke: "1px black",
+                fontSize: `${fontSizeRem}rem`,
               }}
-              className="text-[13rem] leading-none font-bold"
+              className="leading-none font-bold"
             >
               {createdAtDatetime.toFormat("dd")}
             </motion.div>

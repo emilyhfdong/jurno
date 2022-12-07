@@ -15,8 +15,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = () => {
   }, [dispatch])
 
   return (
-    <div className="flex flex-1 justify-center items-center font-sans">
-      <div className="flex flex-col p4 w-[90vw] md:w-[60vw] lg:w-[40vw] xl-[50vw]">
+    <div className="flex flex-1 justify-center items-center font-sans pt-16 pl-16 pr-8 md:p-0">
+      <div className="flexflex-col p4 w-100 md:w-[60vw] lg:w-[40vw] xl-[50vw]">
         <p className="text-3xl mb-6 font-bold">Welcome back</p>
         <Auth
           supabaseClient={client}
