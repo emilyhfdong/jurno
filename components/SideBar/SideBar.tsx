@@ -32,7 +32,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
   return (
     <motion.div
       animate={{ borderColor: theme.border, color: theme.content }}
-      className="flex fixed border border-grey top-4 md:top-8 left-4 md:left-8 w-8 md:w-16 bottom-4 md:bottom-8 flex-col items-center justify-end text-base z-10 py-2 md:py-6"
+      className="flex fixed border border-grey top-4 md:top-8 left-4 md:left-8 w-8 md:w-16 bottom-4 md:bottom-8 flex-col items-center justify-end text-xs md:text-base z-10 py-2 md:py-6"
     >
       {!!session && (
         <>
@@ -44,13 +44,13 @@ export const SideBar: React.FC<SideBarProps> = () => {
                 }
                 className={`${
                   isLoading ? "ri-loader-line animate-spin-slow" : "ri-add-line"
-                } mb-2 cursor-pointer`}
+                } mb-4 md:mb-2 cursor-pointer`}
               ></i>
               <i
                 onClick={() => dispatch(appActions.setIsBlurred(!isBlurred))}
                 className={`ri-eye${
                   isBlurred ? "-off" : ""
-                }-line mb-2 cursor-pointer`}
+                }-line mb-4 md:mb-2 cursor-pointer`}
               ></i>
             </>
           )}
