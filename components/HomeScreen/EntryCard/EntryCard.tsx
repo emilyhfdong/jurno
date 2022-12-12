@@ -135,8 +135,8 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
         }}
         className="flex-1 h-full md:py-8 overflow-hidden"
       >
-        <div className="flex overflow-hidden h-full flex-col lg:flex-row md:border-b-4 border-black pl-0 md:pl-8 py-2 md:py-8">
-          <div className="flex flex-col shrink-0 lg:mr-8 w-60">
+        <div className="flex overflow-hidden h-full flex-col md:border-b-4 border-black pl-0 md:pl-8 py-2 md:py-8">
+          <div className="flex flex-col shrink-0 mb-4">
             {!requiresPin && (
               <div
                 onBlur={(e) => onTitleChange(e.target.innerHTML)}
