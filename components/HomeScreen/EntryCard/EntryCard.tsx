@@ -44,6 +44,20 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
       utils.allEntries.invalidate()
     },
   })
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const onScroll = () => {
+      const boundingRect = containerRef.current?.getBoundingClientRect()
+      if (boundingRect && boundingRect.y === 0) {
+        dispatch(appActions.setCurrentEntryDate(createdAt))
+      }
+    }
+    onScroll()
+
+    window.addEventListener("scroll", onScroll)
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [createdAt, dispatch, containerRef])
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -101,9 +115,10 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
   }
 
   return (
-    <section
+    <motion.section
+      ref={containerRef}
       onClick={() => setIsConfirmingDelete(false)}
-      className={`flex relative flex-col md:flex-row h-screen w-full md:items-center snap-start md:snap-center md:justify-between pt-16 md:pt-0 pl-16 pr-4 md:pl-48 md:pr-8 overflow-hidden pb-4 md:pb-0`}
+      className={`flex relative flex-col md:flex-row h-screen w-full md:items-center snap-start md:snap-center md:justify-between pt-16 md:pt-0 pl-16 pr-4 md:pl-52 md:pr-8 overflow-hidden pb-4 md:pb-0`}
     >
       <AnimatedDate
         isVisible={!isEditing}
@@ -196,6 +211,6 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
           </div>
         </div>
       </motion.div>
-    </section>
+    </motion.section>
   )
 }

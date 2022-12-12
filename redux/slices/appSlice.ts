@@ -4,6 +4,7 @@ interface AppState {
   requiresPin: boolean
   isBlurred: boolean
   editingEntryId: string | null
+  currentEntryDate: string | null
 }
 
 const IS_DEVELOPMENT = process.env.NODE_ENV === "development"
@@ -13,6 +14,7 @@ const initialState: AppState = {
   requiresPin: IS_DEVELOPMENT ? false : true,
   isBlurred: false,
   editingEntryId: null,
+  currentEntryDate: null,
 }
 
 export const appSlice = createSlice({
@@ -32,6 +34,12 @@ export const appSlice = createSlice({
       return {
         ...state,
         editingEntryId: action.payload,
+      }
+    },
+    setCurrentEntryDate: (state, action: PayloadAction<string | null>) => {
+      return {
+        ...state,
+        currentEntryDate: action.payload,
       }
     },
   },

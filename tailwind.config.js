@@ -16,11 +16,23 @@ module.exports = {
         red: "#D83A17",
         blue: "blue",
       },
+      gridTemplateRows: {
+        7: "repeat(7, minmax(0, 1fr))",
+      },
 
       animation: {
         "spin-slow": "spin 2s linear infinite",
       },
     },
   },
+  safelist: [
+    "col-start-1",
+    "col-start-2",
+    "col-start-3",
+    "col-start-4",
+    "col-start-5",
+    "col-start-6",
+    "col-start-7",
+  ],
   plugins: [],
 }
