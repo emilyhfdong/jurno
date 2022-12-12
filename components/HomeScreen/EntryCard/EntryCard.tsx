@@ -103,7 +103,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
   return (
     <section
       onClick={() => setIsConfirmingDelete(false)}
-      className={`flex relative flex-col md:flex-row h-screen w-full md:items-center snap-start md:snap-center md:justify-between pt-16 md:pt-0 pl-16 pr-4 md:pl-24 md:pr-8 overflow-hidden pb-4 md:pb-0`}
+      className={`flex relative flex-col md:flex-row h-screen w-full md:items-center snap-start md:snap-center md:justify-between pt-16 md:pt-0 pl-16 pr-4 md:pl-48 md:pr-8 overflow-hidden pb-4 md:pb-0`}
     >
       <AnimatedDate
         isVisible={!isEditing}
