@@ -11,6 +11,8 @@ import { useDispatch } from "react-redux"
 import { appActions } from "../../../redux/slices/appSlice"
 import { useAppSelector } from "../../../redux/hooks"
 import { BREAKPOINTS, FadeAnimatePresence, useScreenWidth } from "../../shared"
+import { DeleteButton } from "./DeleteButton"
+import { EditButton } from "./EditButton"
 
 type EntryCardProps = {
   entry: Entry
@@ -36,13 +38,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
   const screenWidth = useScreenWidth()
   const isMobile = screenWidth && screenWidth <= BREAKPOINTS.md
 
-  const utils = trpc.useContext()
   const dispatch = useDispatch()
-  const { isLoading, mutate: deleteMutation } = trpc.deleteEntry.useMutation({
-    onSettled: () => {
-      utils.allEntries.invalidate()
-    },
-  })
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -96,24 +92,6 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
     }
   }, [isEditing, editor])
 
-  const onDelete = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.stopPropagation()
-    if (isConfirmingDelete) {
-      deleteMutation({ id })
-      setIsConfirmingDelete(false)
-    } else {
-      setIsConfirmingDelete(true)
-    }
-  }
-
-  const onEditToggle = () => {
-    if (isEditing) {
-      mutate({ id, title: title || "", content: editor?.getJSON() })
-    }
-    dispatch(appActions.setActiveEditor(isEditing ? null : editor))
-    dispatch(appActions.setEditingEntryId(isEditing ? null : id))
-  }
-
   return (
     <motion.section
       ref={containerRef}
@@ -138,7 +116,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
         <div
           className={`flex overflow-hidden h-full flex-col ${
             isEditing ? "md:border-b md:border-r" : "md:border-b-4"
-          } border-black pl-0 md:pl-8 py-2 md:py-8`}
+          } border-black pl-0 md:pl-8 pt-2 md:pt-8`}
         >
           {!requiresPin && (
             <div
@@ -165,42 +143,32 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
             )}
           </div>
           <div className="flex mt-1 md:mt-2 ">
-            <div
-              onClick={onEditToggle}
-              className="flex items-center cursor-pointer mr-4"
-            >
-              {isEditing ? "Done" : "Edit"}
-              <i className="ri-arrow-right-s-line"></i>
-            </div>
-            <div
-              onClick={onDelete}
-              className={`flex items-center cursor-pointer ${
-                isConfirmingDelete ? "text-red" : ""
-              }`}
-            >
-              {isLoading ? (
-                <i className="ri-loader-line animate-spin-slow"></i>
-              ) : isConfirmingDelete ? (
-                "Click to confirm"
-              ) : (
-                "Delete"
-              )}
-              <i className="ri-arrow-right-s-line"></i>
-            </div>
+            <EditButton
+              editor={editor}
+              entryId={id}
+              saveEntry={() =>
+                mutate({ id, title: title || "", content: editor?.getJSON() })
+              }
+            />
+            <DeleteButton
+              entryId={id}
+              isConfirmingDelete={isConfirmingDelete}
+              setIsConfirmingDelete={setIsConfirmingDelete}
+            />
           </div>
-          <div className="mt-4 h-full max-sm:overflow-hidden">
-            <div className="h-full max-sm:overflow-hidden text-sm font-light flex-1 w-full ">
+          <div className="mt-4 h-full overflow-hidden">
+            <div className="h-full overflow-hidden text-sm font-light flex-1 w-full relative">
               {!requiresPin && (
                 <div
                   className={`w-full h-full overflow-scroll ${
                     isBlurred ? "blur-sm" : ""
                   }`}
                 >
-                  <div className="w-full md:h-full md:[&_div:first-child]:h-full [&_div:first-child]:w-full relative">
+                  <div className="w-full md:h-full md:[&_div:first-child]:h-full [&_div:first-child]:w-full">
                     <EditorContent editor={editor} />
                   </div>
                   <FadeAnimatePresence isVisible={!requiresPin} delay={0.2}>
-                    <div className="absolute bottom-[-1rem] w-full h-10 bg-gradient-to-t from-white pointer-events-none" />
+                    <div className="absolute bottom-0 w-full h-10 bg-gradient-to-t from-white pointer-events-none" />
                   </FadeAnimatePresence>
                 </div>
               )}
