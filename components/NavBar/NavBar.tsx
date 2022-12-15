@@ -8,6 +8,7 @@ import { appActions } from "../../redux/slices/appSlice"
 import { trpc } from "../../utils/trpc"
 import { EDIT_MODE_TRANSITION } from "../HomeScreen/EntryCard/utils"
 import { BREAKPOINTS, useScreenWidth, useTheme } from "../shared"
+import { ToolBar } from "./ToolBar"
 import { getDefaultTitle } from "./utils"
 
 type NavBarProps = {}
@@ -39,42 +40,46 @@ export const NavBar: React.FC<NavBarProps> = () => {
     <motion.div
       transition={EDIT_MODE_TRANSITION}
       animate={{
-        height: isEditing ? 0 : isMobile ? "2rem" : "4rem",
-        borderBottomWidth: isEditing ? 0 : 1,
+        height: isEditing ? "3rem" : isMobile ? "2rem" : "4rem",
         borderColor: theme.border,
         color: theme.content,
       }}
-      className={`fixed border h-8 md:h-16 border-grey top-4 md:top-8 left-4 md:left-8 right-4 md:right-8 z-10 flex items-center justify-end gap-3 px-4`}
+      className={`fixed border h-8 md:h-16 border-grey top-4 md:top-8 left-4 md:left-8 right-4 md:right-8 z-10 flex items-center justify-between pr-4 pl-44`}
     >
-      {!!session && (
-        <>
-          {!requiresPin && (
-            <>
-              <i
-                onClick={() =>
-                  !isLoading && mutate({ title: getDefaultTitle() })
-                }
-                className={`${
-                  isLoading ? "ri-loader-line animate-spin-slow" : "ri-add-line"
-                } cursor-pointer`}
-              ></i>
-              <i
-                onClick={() => dispatch(appActions.setIsBlurred(!isBlurred))}
-                className={`ri-eye${
-                  isBlurred ? "-off" : ""
-                }-line cursor-pointer`}
-              ></i>
-            </>
-          )}
-          <i
-            className="ri-logout-box-line cursor-pointer"
-            onClick={async () => {
-              await client.auth.signOut()
-              router.push("/login")
-            }}
-          ></i>
-        </>
-      )}
+      {isEditing ? <ToolBar /> : <div />}
+      <div className="flex items-center gap-3">
+        {!!session && (
+          <>
+            {!requiresPin && (
+              <>
+                <i
+                  onClick={() =>
+                    !isLoading && mutate({ title: getDefaultTitle() })
+                  }
+                  className={`${
+                    isLoading
+                      ? "ri-loader-line animate-spin-slow"
+                      : "ri-add-line"
+                  } cursor-pointer`}
+                ></i>
+                <i
+                  onClick={() => dispatch(appActions.setIsBlurred(!isBlurred))}
+                  className={`ri-eye${
+                    isBlurred ? "-off" : ""
+                  }-line cursor-pointer`}
+                ></i>
+              </>
+            )}
+            <i
+              className="ri-logout-box-line cursor-pointer"
+              onClick={async () => {
+                await client.auth.signOut()
+                router.push("/login")
+              }}
+            ></i>
+          </>
+        )}
+      </div>
     </motion.div>
   )
 }

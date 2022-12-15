@@ -78,7 +78,7 @@ export const Calendar: React.FC<CalendarProps> = () => {
             <div
               className={` ${
                 isCurrentEntryDate
-                  ? "text-white"
+                  ? "text-white font-bold"
                   : isToday
                   ? "text-red font-bold"
                   : "text-black"

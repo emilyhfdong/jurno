@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { Editor } from "@tiptap/react"
 
 interface AppState {
   requiresPin: boolean
   isBlurred: boolean
   editingEntryId: string | null
   currentEntryDate: string | null
+  activeEditor: Editor | null
 }
 
 const IS_DEVELOPMENT = process.env.NODE_ENV === "development"
@@ -15,6 +17,7 @@ const initialState: AppState = {
   isBlurred: false,
   editingEntryId: null,
   currentEntryDate: null,
+  activeEditor: null,
 }
 
 export const appSlice = createSlice({
@@ -36,12 +39,14 @@ export const appSlice = createSlice({
         editingEntryId: action.payload,
       }
     },
-    setCurrentEntryDate: (state, action: PayloadAction<string | null>) => {
-      return {
-        ...state,
-        currentEntryDate: action.payload,
-      }
-    },
+    setCurrentEntryDate: (state, action: PayloadAction<string | null>) => ({
+      ...state,
+      currentEntryDate: action.payload,
+    }),
+    setActiveEditor: (state, action: PayloadAction<Editor | null>) => ({
+      ...state,
+      activeEditor: action.payload,
+    }),
   },
 })
 
