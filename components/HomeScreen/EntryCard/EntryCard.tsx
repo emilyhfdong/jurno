@@ -156,8 +156,8 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
               setIsConfirmingDelete={setIsConfirmingDelete}
             />
           </div>
-          <div className="mt-4 h-full overflow-hidden">
-            <div className="h-full overflow-hidden text-sm font-light flex-1 w-full relative">
+          <div className="mt-4 h-full overflow-hidden mx-[-1rem]">
+            <div className="h-full overflow-hidden text-sm font-light flex-1 w-full relative px-4">
               {!requiresPin && (
                 <div
                   className={`w-full h-full overflow-scroll ${
