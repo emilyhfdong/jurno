@@ -14,7 +14,7 @@ export const Calendar: React.FC<CalendarProps> = () => {
     : DateTime.now()
   const firstDayColStart = (now.startOf("month").weekday % 7) + 1
   const daysInMonth = now.daysInMonth
-
+  const requiresPin = useAppSelector((state) => state.app.requiresPin)
   const { data } = trpc.allEntries.useQuery()
 
   const getHasEntryOnDay = useCallback(
@@ -57,6 +57,10 @@ export const Calendar: React.FC<CalendarProps> = () => {
     [now]
   )
 
+  if (requiresPin) {
+    return null
+  }
+
   return (
     <div className="w-full text-xs">
       <div className="text-center mb-2 font-semibold">
@@ -66,7 +70,7 @@ export const Calendar: React.FC<CalendarProps> = () => {
         {DAYS_OF_WEEK.map((weekDay, idx) => (
           <p
             key={idx}
-            className="border flex items-center justify-center mb-1 font-thin "
+            className="flex items-center justify-center mb-1 font-thin "
           >
             {weekDay}
           </p>

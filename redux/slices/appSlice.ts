@@ -9,8 +9,8 @@ interface AppState {
   activeEditor: Editor | null
 }
 
-const IS_DEVELOPMENT = process.env.NODE_ENV === "development"
-// const IS_DEVELOPMENT = false
+// const IS_DEVELOPMENT = process.env.NODE_ENV === "development"
+const IS_DEVELOPMENT = false
 
 const initialState: AppState = {
   requiresPin: IS_DEVELOPMENT ? false : true,
