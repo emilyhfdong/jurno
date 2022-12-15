@@ -187,7 +187,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
             </div>
           </div>
           <div className="pt-4 md:pt-0 h-full max-sm:overflow-hidden">
-            <div className="h-full max-sm:overflow-hidden text-base font-thin flex-1 w-full ">
+            <div className="h-full max-sm:overflow-hidden text-base font-light flex-1 w-full ">
               <ToolBar
                 entryId={id}
                 entryFinishedAt={finishedAt}
