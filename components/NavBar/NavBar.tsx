@@ -44,10 +44,10 @@ export const NavBar: React.FC<NavBarProps> = () => {
         borderColor: theme.border,
         color: theme.content,
       }}
-      className={`fixed border h-8 md:h-16 border-grey top-4 md:top-8 left-4 md:left-8 right-4 md:right-8 z-10 flex items-center justify-between pr-4 pl-44`}
+      className={`fixed border h-8 md:h-16 border-grey top-4 md:top-8 left-4 md:left-8 right-4 md:right-8 z-10 flex items-center justify-between pr-4 pl-6 md:pl-44`}
     >
       {isEditing ? <ToolBar /> : <div />}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 max-sm:hidden">
         {!!session && (
           <>
             {!requiresPin && (

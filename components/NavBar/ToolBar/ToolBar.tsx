@@ -41,7 +41,7 @@ export const ToolBar: React.FC<ToolBarProps> = () => {
           }}
           transition={EDIT_MODE_TRANSITION}
         >
-          <div className="flex items-center px-4 text-lg">
+          <div className="flex items-center px-4 text-base md:text-lg">
             <ToolbarButton
               onClick={() => editor?.chain().focus().toggleBold().run()}
               isActive={editor?.isActive("bold")}
@@ -110,7 +110,7 @@ export const ToolbarButton: React.FC<ToolbarButtonProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`flex items-center justify-center h-6 w-6 mx-1 rounded cursor-pointer ${
+      className={`flex items-center justify-center h-6 w-6 mx-[2px]  md:mx-1 rounded cursor-pointer ${
         isActive ? "bg-black text-white" : "hover:bg-black hover:text-white"
       }`}
     >
