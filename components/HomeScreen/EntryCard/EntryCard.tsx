@@ -13,6 +13,7 @@ import { useAppSelector } from "../../../redux/hooks"
 import { BREAKPOINTS, FadeAnimatePresence, useScreenWidth } from "../../shared"
 import { DeleteButton } from "./DeleteButton"
 import { EditButton } from "./EditButton"
+import { EntryBody } from "./EntryBody"
 
 type EntryCardProps = {
   entry: Entry
@@ -156,24 +157,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
               setIsConfirmingDelete={setIsConfirmingDelete}
             />
           </div>
-          <div className="mt-4 h-full overflow-hidden mx-[-1rem]">
-            <div className="h-full overflow-hidden text-sm font-light flex-1 w-full relative px-4">
-              {!requiresPin && (
-                <div
-                  className={`w-full h-full overflow-scroll ${
-                    isBlurred ? "blur-sm" : ""
-                  }`}
-                >
-                  <div className="w-full md:h-full md:[&_div:first-child]:h-full [&_div:first-child]:w-full">
-                    <EditorContent editor={editor} />
-                  </div>
-                  <FadeAnimatePresence isVisible={!requiresPin} delay={0.2}>
-                    <div className="absolute bottom-0 w-full h-10 bg-gradient-to-t from-white pointer-events-none" />
-                  </FadeAnimatePresence>
-                </div>
-              )}
-            </div>
-          </div>
+          <EntryBody editor={editor} />
         </div>
       </motion.div>
     </motion.section>
