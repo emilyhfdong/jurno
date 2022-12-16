@@ -116,7 +116,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
       >
         <div
           className={`flex overflow-hidden h-full flex-col ${
-            isEditing ? "md:border-b md:border-r" : "md:border-b-4"
+            isEditing ? "md:border-b md:border-r md:pr-8" : "md:border-b-4"
           } border-black pl-0 md:pl-8 pt-2 md:pt-8`}
         >
           {!requiresPin && (
