@@ -46,7 +46,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry }) => {
     const onScroll = () => {
       const boundingRect = containerRef.current?.getBoundingClientRect()
       if (boundingRect && boundingRect.y === 0) {
-        dispatch(appActions.setCurrentEntryDate(createdAt))
+        dispatch(appActions.setCalendarDate(createdAt))
       }
     }
     onScroll()

@@ -5,7 +5,7 @@ interface AppState {
   requiresPin: boolean
   isBlurred: boolean
   editingEntryId: string | null
-  currentEntryDate: string | null
+  calendarDate: string | null
   activeEditor: Editor | null
 }
 
@@ -16,7 +16,7 @@ const initialState: AppState = {
   requiresPin: IS_DEVELOPMENT ? false : true,
   isBlurred: false,
   editingEntryId: null,
-  currentEntryDate: null,
+  calendarDate: null,
   activeEditor: null,
 }
 
@@ -39,9 +39,9 @@ export const appSlice = createSlice({
         editingEntryId: action.payload,
       }
     },
-    setCurrentEntryDate: (state, action: PayloadAction<string | null>) => ({
+    setCalendarDate: (state, action: PayloadAction<string | null>) => ({
       ...state,
-      currentEntryDate: action.payload,
+      calendarDate: action.payload,
     }),
     setActiveEditor: (state, action: PayloadAction<Editor | null>) => ({
       ...state,

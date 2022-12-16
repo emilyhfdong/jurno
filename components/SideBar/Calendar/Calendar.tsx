@@ -1,6 +1,8 @@
 import { DateTime } from "luxon"
 import React, { useCallback } from "react"
+import { useDispatch } from "react-redux"
 import { useAppSelector } from "../../../redux/hooks"
+import { appActions } from "../../../redux/slices/appSlice"
 import { trpc } from "../../../utils/trpc"
 
 type CalendarProps = {}
@@ -8,14 +10,13 @@ type CalendarProps = {}
 const DAYS_OF_WEEK = ["S", "M", "T", "W", "T", "F", "S"]
 
 export const Calendar: React.FC<CalendarProps> = () => {
-  const currentEntryDate = useAppSelector((state) => state.app.currentEntryDate)
-  const now = currentEntryDate
-    ? DateTime.fromISO(currentEntryDate)
-    : DateTime.now()
+  const calendarDate = useAppSelector((state) => state.app.calendarDate)
+  const now = calendarDate ? DateTime.fromISO(calendarDate) : DateTime.now()
   const firstDayColStart = (now.startOf("month").weekday % 7) + 1
   const daysInMonth = now.daysInMonth
   const requiresPin = useAppSelector((state) => state.app.requiresPin)
   const { data } = trpc.allEntries.useQuery()
+  const dispatch = useDispatch()
 
   const getHasEntryOnDay = useCallback(
     (day: number) =>
@@ -34,16 +35,16 @@ export const Calendar: React.FC<CalendarProps> = () => {
 
   const getIsCurrentEntryDate = useCallback(
     (day: number) => {
-      if (!currentEntryDate) {
+      if (!calendarDate) {
         return false
       }
       return DateTime.fromObject({
         year: now.year,
         month: now.month,
         day,
-      }).hasSame(DateTime.fromISO(currentEntryDate), "day")
+      }).hasSame(DateTime.fromISO(calendarDate), "day")
     },
-    [currentEntryDate, now]
+    [calendarDate, now]
   )
 
   const getIsToday = useCallback(
@@ -63,8 +64,26 @@ export const Calendar: React.FC<CalendarProps> = () => {
 
   return (
     <div className="w-full text-xs">
-      <div className="text-center mb-2 font-semibold">
-        {now.monthLong} {now.year}
+      <div className="text-center mb-2 font-semibold flex items-center justify-between px-2">
+        <i
+          className="ri-arrow-left-s-line cursor-pointer"
+          onClick={() =>
+            dispatch(
+              appActions.setCalendarDate(now.minus({ month: 1 }).toISODate())
+            )
+          }
+        ></i>
+        <p>
+          {now.monthLong} {now.year}
+        </p>
+        <i
+          className="ri-arrow-right-s-line cursor-pointer"
+          onClick={() =>
+            dispatch(
+              appActions.setCalendarDate(now.plus({ month: 1 }).toISODate())
+            )
+          }
+        ></i>
       </div>
       <div className="w-full grid grid-cols-7 grid-rows-6  max-sm:hidden px-1">
         {DAYS_OF_WEEK.map((weekDay, idx) => (
