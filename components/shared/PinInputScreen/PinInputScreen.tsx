@@ -9,6 +9,7 @@ type PinInputScreenProps = {
   setPin: (pin: string) => void
   pin: string
   title: string
+  isLoading?: boolean
 }
 
 export const PinInputScreen: React.FC<PinInputScreenProps> = ({
@@ -18,6 +19,7 @@ export const PinInputScreen: React.FC<PinInputScreenProps> = ({
   setPin,
   pin,
   title,
+  isLoading,
 }) => {
   return (
     <FadeAnimatePresence isVisible={isVisible}>
@@ -28,6 +30,7 @@ export const PinInputScreen: React.FC<PinInputScreenProps> = ({
           pin={pin}
           setPin={setPin}
           hasError={hasError}
+          isLoading={isLoading}
         />
       </div>
     </FadeAnimatePresence>

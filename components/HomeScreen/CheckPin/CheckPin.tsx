@@ -12,7 +12,7 @@ export const CheckPin: React.FC<CheckPinProps> = () => {
   const requiresPin = useAppSelector((state) => state.app.requiresPin)
   const [pin, setPin] = useState("")
   const dispatch = useDispatch()
-  const { mutate, data } = trpc.checkPin.useMutation({
+  const { mutate, data, isLoading } = trpc.checkPin.useMutation({
     onSuccess: (data) => {
       setPin("")
       data.correct && dispatch(appActions.setRequiresPin(false))
@@ -27,6 +27,7 @@ export const CheckPin: React.FC<CheckPinProps> = () => {
       pin={pin}
       setPin={setPin}
       hasError={!!(data && !data.correct)}
+      isLoading={isLoading}
     />
   )
 }

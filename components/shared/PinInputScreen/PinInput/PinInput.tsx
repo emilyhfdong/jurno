@@ -7,6 +7,7 @@ type PinInputProps = {
   onEnter: () => void
   setPin: (pin: string) => void
   hasError: boolean
+  isLoading?: boolean
 }
 
 export const PinInput: React.FC<PinInputProps> = ({
@@ -14,6 +15,7 @@ export const PinInput: React.FC<PinInputProps> = ({
   onEnter,
   setPin,
   hasError,
+  isLoading = false,
 }) => {
   const pinRowControls = useAnimation()
   const theme = useTheme()
@@ -54,22 +56,36 @@ export const PinInput: React.FC<PinInputProps> = ({
           <motion.div
             key={idx}
             animate={{
-              borderColor: isFilled ? theme.white : theme.grey,
+              boxShadow: isLoading
+                ? [
+                    "0px 0px 0px 0 rgba(255, 255, 255, 0.5)",
+                    "0px 0px 8px 0 rgba(255, 255, 255, 0.5)",
+                    "0px 0px 0px 0 rgba(255, 255, 255, 0.5)",
+                  ]
+                : "none",
             }}
-            transition={{ duration: 0.1 }}
-            className="flex justify-center items-center border border-grey p-4 rounded-md"
+            className="rounded-md"
+            transition={{ repeat: Infinity, duration: 0.5, ease: "linear" }}
           >
-            <motion.i
-              animate={
-                isFilled
-                  ? { transform: ["scale(1)", "scale(1.4)", "scale(1)"] }
-                  : undefined
-              }
-              transition={{ duration: 0.2 }}
-              className={`ri-asterisk text-2xl block  ${
-                isFilled ? "" : "opacity-30"
-              }`}
-            />
+            <motion.div
+              animate={{
+                borderColor: isFilled ? theme.white : theme.grey,
+              }}
+              transition={{ duration: 0.1 }}
+              className="flex justify-center items-center border border-grey p-4 rounded-md overflow-hidden"
+            >
+              <motion.i
+                animate={
+                  isFilled
+                    ? { transform: ["scale(1)", "scale(1.4)", "scale(1)"] }
+                    : undefined
+                }
+                transition={{ duration: 0.2 }}
+                className={`ri-asterisk text-2xl block  ${
+                  isFilled ? "" : "opacity-30"
+                }`}
+              />
+            </motion.div>
           </motion.div>
         )
       })}
