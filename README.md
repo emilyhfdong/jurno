@@ -2,7 +2,7 @@
 
 ## Description
 
-An encrypted journalling app with a focus on privacy
+An minimal journalling app with a focus on privacy
 
 Built with **NextJS, Supabase, trpc, Tailwind**.
 
