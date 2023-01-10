@@ -50,6 +50,7 @@ export const appRouter = router({
           ...(title && { title: encrypt(title) }),
           last_updated: new Date().toISOString().toLocaleString(),
         })
+        .eq("id", id)
         .select("*")
         .single()
 
@@ -69,6 +70,7 @@ export const appRouter = router({
           id,
           finished_at: new Date().toISOString().toLocaleString(),
         })
+        .eq("id", id)
         .select("*")
         .single()
 
@@ -103,6 +105,8 @@ export const appRouter = router({
       const response = await client
         .from("users")
         .update({ pin: encrypt(pin), id: user.id })
+        .eq("id", user.id)
+
       if (response.error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
