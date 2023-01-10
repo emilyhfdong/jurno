@@ -10,6 +10,8 @@ Built with **NextJS, Supabase, tRPC, Tailwind**.
 
 ![Entry list](/assets/entries.png "Entry list")
 
+![Blurred entries](/assets/blurred.png "Blurred entries")
+
 ![Pin entry](/assets/pin.png "Pin entry")
 
 ![Entry list](/assets/entries.gif "Entry list")
