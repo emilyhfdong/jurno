@@ -4,7 +4,7 @@
 
 An minimal journalling app with a focus on privacy
 
-Built with **NextJS, Supabase, trpc, Tailwind**.
+Built with **NextJS, Supabase, tRPC, Tailwind**.
 
 ## Screenshots
 
